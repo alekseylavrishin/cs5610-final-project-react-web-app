@@ -4,15 +4,14 @@ import Home from "./home";
 import Login from "./login";
 import Signup from "./signup";
 import Profile from "./profile";
-
-
+import Search from "./search";
+import Details from "./details";
 
 function Project() {
     return(
         <div>
-
-            <pre>{JSON.stringify(process.env.REACT_APP_API_KEY)}</pre>
             <h1>Project</h1>
+
             <div className={"row"}>
                 <div className={"col-2"}>
                     <div className={"list-group"}>
@@ -28,6 +27,12 @@ function Project() {
                         <Link to={"/project/login"} className={"list-group-item"}>
                             Login
                         </Link>
+                        <Link to={"/project/search"} className={"list-group-item"}>
+                            Search
+                        </Link>
+                        {/*<Link to={"/project/details"} className={"list-group-item"}>
+                            Details
+                        </Link>*/}
                     </div>
                 </div>
             <div className={"col-10"}>
@@ -37,6 +42,9 @@ function Project() {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route path="/search/:search" element={<Search />} />
+                    <Route path="/details/:recipeId" element={<Details />} />
                 </Routes>
             </div>
 
