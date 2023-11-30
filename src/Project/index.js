@@ -6,6 +6,8 @@ import Signup from "./signup";
 import Profile from "./profile";
 import Search from "./search";
 import Details from "./details";
+import UserList from "./users/list";
+import UserDetails from "./users/details";
 
 function Project() {
     return(
@@ -33,6 +35,9 @@ function Project() {
                         {/*<Link to={"/project/details"} className={"list-group-item"}>
                             Details
                         </Link>*/}
+                        <Link to={"/project/users"} className={"list-group-item"}>
+                            Users
+                        </Link>
                     </div>
                 </div>
             <div className={"col-10"}>
@@ -45,6 +50,8 @@ function Project() {
                     <Route path="/search" element={<Search />} />
                     <Route path="/search/:search" element={<Search />} />
                     <Route path="/details/:recipeId" element={<Details />} />
+                    <Route path="/users" element={<UserList />} />
+                    <Route path="users/:id" element={<UserDetails />}/>
                 </Routes>
             </div>
 

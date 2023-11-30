@@ -1,12 +1,13 @@
 import {useEffect, useState} from "react";
 import * as client from "./client";
-import {Link, useParams} from "react-router-dom";
+import {Link, useParams, useNavigate} from "react-router-dom";
 
 function Search() {
     const {search} = useParams();
     const [searchTerm, setSearchTerm] = useState(search);
     const [results, setResults] = useState(null);
     const [data, setData] = useState(null);
+    const navigate = useNavigate();
 
     const fetchRecipes = async (search) => {
         const results = await client.findRecipes(search);
@@ -26,7 +27,7 @@ function Search() {
             <h1>Search</h1>
 
             <button
-                onClick={fetchRecipes}
+                onClick={() => navigate(`/project/search/${searchTerm}`)}
                 className={"btn btn-primary float-end"}>
                 Search
             </button>
