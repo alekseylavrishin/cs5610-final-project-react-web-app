@@ -3,11 +3,13 @@ import {Navigate} from "react-router";
 import Home from "./home";
 import Login from "./login";
 import Signup from "./signup";
-import Profile from "./profile";
+//import Account from "./profile";
 import Search from "./search";
 import Details from "./details";
 import UserList from "./users/list";
 import UserDetails from "./users/details";
+import Signin from "./users/signin";
+import Account from "./users/account";
 
 function Project() {
     return(
@@ -23,11 +25,11 @@ function Project() {
                         <Link to={"/project/signup"} className={"list-group-item"}>
                             Signup
                         </Link>
-                        <Link to={"/project/profile"} className={"list-group-item"}>
-                            Profile
+                        <Link to={"/project/account"} className={"list-group-item"}>
+                            Account
                         </Link>
-                        <Link to={"/project/login"} className={"list-group-item"}>
-                            Login
+                        <Link to={"/project/signin"} className={"list-group-item"}>
+                            Sign In
                         </Link>
                         <Link to={"/project/search"} className={"list-group-item"}>
                             Search
@@ -45,8 +47,11 @@ function Project() {
                     <Route path="/" element={<Navigate to="home" />} />
                     <Route path="/home" element={<Home />} />
                     <Route path="/signup" element={<Signup />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/login" element={<Login />} />
+{/*
+                    <Route path="/profile" element={<Account />} />
+*/}
+                    <Route path="/account" element={<Account />}/>
+                    <Route path="/signin" element={<Signin />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/search/:search" element={<Search />} />
                     <Route path="/details/:recipeId" element={<Details />} />

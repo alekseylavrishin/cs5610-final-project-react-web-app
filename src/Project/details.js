@@ -1,10 +1,21 @@
 import {useParams} from "react-router-dom";
 import {useState, useEffect} from "react";
 import * as client from "./client";
+import * as userClient from "./users/client";
 
 function Details() {
+    const [currentUser ,setCurrentUser] = useState(null);
     const { recipeId } = useParams();
     const [recipe, setRecipe] = useState(null);
+
+    const fetchUser = async () => {
+        try {
+            const user = await userClient.account();
+            setCurrentUser(user);
+        } catch (error){
+            setCurrentUser(null);
+        }
+    }
 
     const fetchRecipe = async () => {
         const recipe = await client.getRecipeInfo(recipeId);
@@ -20,27 +31,22 @@ function Details() {
 
     useEffect(() => {
         fetchRecipe();
+        fetchUser();
     }, []);
 
     return(
         <div>
             {recipe &&(
                 <div>
+                    {currentUser && (
+                        <button className={"btn btn-primary float-end"}>
+                            Like
+                        </button>
+                    )}
                     <h1 className={"text-capitalize"}>{recipe.title}</h1>
                     <p>{recipe.summary}</p>
                     <img src={recipe.image} alt={recipe.name}/>
                     <div className={"row bg-secondary-subtle"}>
-                        {/*{recipe.nutrition.nutrients.filter((n, index) => (
-                            n.name === "Calories"
-                        ))}*/}
-{/*
-                        {JSON.stringify(getNutrition(selectedNutrients), null, 2)}
-*/}
-{/*
-                        {getNutrition(selectedNutrients).map(())}
-*/}
-                        {/*{JSON.stringify(recipe.nutrition.nutrients.filter(nutrient => selectedNutrients.includes(nutrient.name))
-                            .map(({name, amount, unit}) => ({name, amount, unit})))}*/}
                         { recipe.nutrition.nutrients
                             .filter(nutrient => selectedNutrients.includes(nutrient.name))
                             .map(({name, amount, unit}) => ({name, amount, unit}))

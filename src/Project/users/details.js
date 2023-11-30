@@ -1,11 +1,13 @@
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import * as client from "./client";
+import {deleteUser} from "./client";
 
 
 function UserDetails() {
     const [user, setUser] = useState(null);
     const {id} = useParams();
+    const navigate = useNavigate();
 
     const fetchUser = async () => {
         const user = await client.findUserById(id);
@@ -16,6 +18,11 @@ function UserDetails() {
         const status = await client.updateUser(id, user);
         //setUser(updatedUser);
     };
+
+    const deleteUser = async (id) => {
+        const status = await client.deleteUser(id);
+        navigate("/project/users");
+    }
 
     useEffect(() => {
         fetchUser();
@@ -34,6 +41,9 @@ function UserDetails() {
                     /></p>
                     <button className={"btn btn-primary"} onClick={updateUser}>
                         Update
+                    </button>
+                    <button className={"btn btn-danger"} onClick={() => deleteUser(user._id)}>
+                        Delete
                     </button>
                 </div>
             )}
