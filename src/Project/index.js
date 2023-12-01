@@ -10,58 +10,37 @@ import UserList from "./users/list";
 import UserDetails from "./users/details";
 import Signin from "./users/signin";
 import Account from "./users/account";
+import Navigation from "./nav";
+import store from "./store";
+import {Provider} from "react-redux";
+import CurrentUser from "./users/currentUser";
 
 function Project() {
     return(
-        <div>
-            <h1>Project</h1>
-
-            <div className={"row"}>
-                <div className={"col-2"}>
-                    <div className={"list-group"}>
-                        <Link to={"/project/home"} className={"list-group-item"}>
-                            Home
-                        </Link>
-                        <Link to={"/project/signup"} className={"list-group-item"}>
-                            Signup
-                        </Link>
-                        <Link to={"/project/account"} className={"list-group-item"}>
-                            Account
-                        </Link>
-                        <Link to={"/project/signin"} className={"list-group-item"}>
-                            Sign In
-                        </Link>
-                        <Link to={"/project/search"} className={"list-group-item"}>
-                            Search
-                        </Link>
-                        {/*<Link to={"/project/details"} className={"list-group-item"}>
-                            Details
-                        </Link>*/}
-                        <Link to={"/project/users"} className={"list-group-item"}>
-                            Users
-                        </Link>
+        <Provider store = {store}>
+            <CurrentUser>
+                <div>
+                    <h1>Project</h1>
+                    <div className={"row"}>
+                        <Navigation/>
+                        <div className={"col-10"}>
+                            <Routes>
+                                <Route path="/" element={<Navigate to="home" />} />
+                                <Route path="/home" element={<Home />} />
+                                <Route path="/signup" element={<Signup />} />
+                                <Route path="/account" element={<Account />}/>
+                                <Route path="/signin" element={<Signin />} />
+                                <Route path="/search" element={<Search />} />
+                                <Route path="/search/:search" element={<Search />} />
+                                <Route path="/details/:recipeId" element={<Details />} />
+                                <Route path="/users" element={<UserList />} />
+                                <Route path="users/:id" element={<UserDetails />}/>
+                            </Routes>
+                        </div>
                     </div>
                 </div>
-            <div className={"col-10"}>
-                <Routes>
-                    <Route path="/" element={<Navigate to="home" />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/signup" element={<Signup />} />
-{/*
-                    <Route path="/profile" element={<Account />} />
-*/}
-                    <Route path="/account" element={<Account />}/>
-                    <Route path="/signin" element={<Signin />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/search/:search" element={<Search />} />
-                    <Route path="/details/:recipeId" element={<Details />} />
-                    <Route path="/users" element={<UserList />} />
-                    <Route path="users/:id" element={<UserDetails />}/>
-                </Routes>
-            </div>
-
-        </div>
-        </div>
+            </CurrentUser>
+        </Provider>
 
     );
 }
