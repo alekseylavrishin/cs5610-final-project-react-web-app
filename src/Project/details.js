@@ -3,21 +3,24 @@ import {useState, useEffect} from "react";
 import * as client from "./client";
 import * as userClient from "./users/client";
 import * as likesClient from "./likes/client";
+import {useSelector} from "react-redux";
 
 function Details() {
-    const [currentUser ,setCurrentUser] = useState(null);
+    //const [currentUser ,setCurrentUser] = useState(null);
+    const {currentUser} = useSelector((state) => state.userReducer);
+
     const { recipeId } = useParams();
     const [recipe, setRecipe] = useState(null);
     const [likes, setLikes] = useState([]);
 
-    const fetchUser = async () => {
+    /*const fetchUser = async () => {
         try {
             const user = await userClient.account();
             setCurrentUser(user);
         } catch (error){
             setCurrentUser(null);
         }
-    }
+    }*/
 
     const fetchRecipe = async () => {
         const recipe = await client.getRecipeInfo(recipeId);
@@ -34,12 +37,13 @@ function Details() {
     const currentUserLikesRecipe = async () => {
         const _likes = likesClient.createUserLikesRecipe(currentUser._id, recipeId);
         setLikes([_likes, ...likes]);
+        fetchLikes();
     };
 
 
     useEffect(() => {
         fetchRecipe();
-        fetchUser();
+        //fetchUser();
         fetchLikes();
     }, []);
 
@@ -70,8 +74,8 @@ function Details() {
                     <ul className={"list-group"}>
                         {likes.map((like, index) => (
                             <li className={"list-group-item"} key={index}>
-                                <Link to={`/project/users/${like.user._id}`}>
-                                    {like.user.username}
+                                <Link to={`/project/users/${like.user?._id}`}>
+                                    {like.user?.username}
                                 </Link>
                             </li>
                             ))}

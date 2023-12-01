@@ -38,10 +38,12 @@ function UserDetails() {
 
     const unFollowUser = async () => {
         const status = await followsClient.userUnfollowsUser(id);
+        window.location.reload();
     };
 
     const followUser = async () => {
         const status = await followsClient.userFollowsUser(id);
+        window.location.reload();
     };
 
     const fetchFollowers = async () => {
