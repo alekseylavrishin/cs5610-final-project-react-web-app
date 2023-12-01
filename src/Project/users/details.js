@@ -1,13 +1,19 @@
-import {useParams, useNavigate} from "react-router-dom";
+import {useParams, useNavigate, Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import * as client from "./client";
-import {deleteUser} from "./client";
+import * as likesClient from "../likes/client";
 
 
 function UserDetails() {
     const [user, setUser] = useState(null);
+    const [likes, setLikes] = useState([]);
     const {id} = useParams();
     const navigate = useNavigate();
+
+    const fetchLikes = async () => {
+        const likes = await likesClient.findRecipesThatUserLikes(id)
+        setLikes(likes);
+    }
 
     const fetchUser = async () => {
         const user = await client.findUserById(id);
@@ -26,10 +32,14 @@ function UserDetails() {
 
     useEffect(() => {
         fetchUser();
+        fetchLikes();
     }, [])
 
     return (
         <div>
+            <button className={"btn btn-warning float-end"}>
+                Follow
+            </button>
             user details
             {user && (
                 <div>
@@ -45,6 +55,16 @@ function UserDetails() {
                     <button className={"btn btn-danger"} onClick={() => deleteUser(user._id)}>
                         Delete
                     </button>
+                    <h3>Likes</h3>
+                    <ul className={"list-group"}>
+                        {likes.map((like, index) => (
+                            <li key={index} className={"list-group-item"}>
+                                <Link to={`/project/details/${like.recipeId}`}>
+                                    <h5>{like.recipeId}</h5>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             )}
         </div>

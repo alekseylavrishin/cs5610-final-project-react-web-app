@@ -1,12 +1,14 @@
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useState, useEffect} from "react";
 import * as client from "./client";
 import * as userClient from "./users/client";
+import * as likesClient from "./likes/client";
 
 function Details() {
     const [currentUser ,setCurrentUser] = useState(null);
     const { recipeId } = useParams();
     const [recipe, setRecipe] = useState(null);
+    const [likes, setLikes] = useState([]);
 
     const fetchUser = async () => {
         try {
@@ -22,16 +24,23 @@ function Details() {
         setRecipe(recipe);
     };
 
-    const getNutrition = async (nutrientNames) => {
-        return recipe.nutrition.nutrients.filter(nutrient => nutrientNames.includes(nutrient.name))
-            .map(({name, amount, unit}) => ({name, amount, unit}));
+    const fetchLikes = async () => {
+        const likes = await likesClient.findUsersThatLikeRecipe(recipeId);
+        setLikes(likes);
     }
+
     const selectedNutrients = ["Calories", "Fat", "Carbohydrates", "Protein"];
-    //const nutrientInfo = getNutrition(selectedNutrients);
+
+    const currentUserLikesRecipe = async () => {
+        const _likes = likesClient.createUserLikesRecipe(currentUser._id, recipeId);
+        setLikes([_likes, ...likes]);
+    };
+
 
     useEffect(() => {
         fetchRecipe();
         fetchUser();
+        fetchLikes();
     }, []);
 
     return(
@@ -39,7 +48,7 @@ function Details() {
             {recipe &&(
                 <div>
                     {currentUser && (
-                        <button className={"btn btn-primary float-end"}>
+                        <button onClick={currentUserLikesRecipe} className={"btn btn-primary float-end"}>
                             Like
                         </button>
                     )}
@@ -57,6 +66,17 @@ function Details() {
                             ))}
 
                     </div>
+                    <h2>Liked by</h2>
+                    <ul className={"list-group"}>
+                        {likes.map((like, index) => (
+                            <li className={"list-group-item"} key={index}>
+                                <Link to={`/project/users/${like.user._id}`}>
+                                    {like.user.username}
+                                </Link>
+                            </li>
+                            ))}
+                    </ul>
+
                     <h3>Ready in {recipe.readyInMinutes} minutes</h3>
                     <h4>Ingredients:</h4>
                     <ul >
