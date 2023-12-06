@@ -9,7 +9,9 @@ export const findAllLikes = async () => {}
 export const createUserLikesRecipe = async (userId, recipeId) => {
     const response = await axios.post(`${USERS_API}/${userId}/likes/${recipeId}`)
 }
-export const deleteUserLikesRecipe = async (userId, recipeId) => {}
+export const deleteUserLikesRecipe = async (userId, recipeId) => {
+    const response = await axios.delete(`${USERS_API}/${userId}/likes/${recipeId}`)
+}
 
 export const findUsersThatLikeRecipe = async (recipeId) => {
     const response = await axios.get(`${LIKES_API}/${recipeId}/users`);

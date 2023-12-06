@@ -4,6 +4,7 @@ import * as client from "./client";
 import * as userClient from "./users/client";
 import * as likesClient from "./likes/client";
 import {useSelector} from "react-redux";
+import {deleteUserLikesRecipe} from "./likes/client";
 
 function Details() {
     //const [currentUser ,setCurrentUser] = useState(null);
@@ -40,6 +41,17 @@ function Details() {
         fetchLikes();
     };
 
+    const deleteUserLikesRecipe = async () => {
+        const status = await likesClient.deleteUserLikesRecipe(currentUser._id, recipeId);
+        fetchLikes();
+    };
+
+    const alreadyLiked = () => {
+        return likes.some((like) => {
+            return like.user?._id === currentUser._id;
+        })
+    }
+
 
     useEffect(() => {
         fetchRecipe();
@@ -52,9 +64,20 @@ function Details() {
             {recipe &&(
                 <div>
                     {currentUser && (
-                        <button onClick={currentUserLikesRecipe} className={"btn btn-primary float-end"}>
+                        <>
+                            {alreadyLiked() ? (
+                                <button onClick={deleteUserLikesRecipe} className={"btn btn-primary float-end"}>
+                                    Liked
+                                </button>
+                                ) : (
+                            <button onClick={currentUserLikesRecipe} className={"btn btn-primary float-end"}>
+                                Like
+                            </button>
+                                )}
+                        </>
+                        /*<button onClick={currentUserLikesRecipe} className={"btn btn-primary float-end"}>
                             Like
-                        </button>
+                        </button>*/
                     )}
                     <h1 className={"text-capitalize"}>{recipe.title}</h1>
                     <p>{recipe.summary}</p>
@@ -72,10 +95,10 @@ function Details() {
                     </div>
                     <h2>Liked by</h2>
                     <ul className={"list-group"}>
-                        {likes.map((like, index) => (
+                        {likes?.map((like, index) => (
                             <li className={"list-group-item"} key={index}>
                                 <Link to={`/project/users/${like.user?._id}`}>
-                                    {like.user?.username}
+                                    {like?.user?.username}
                                 </Link>
                             </li>
                             ))}
