@@ -23,7 +23,7 @@ function UserList() {
     }, [])
 
     return(
-        <div>
+     /*   <div>
             {currentUser && currentUser.role === "ADMIN" && (
                 <>
                 <h2>Users</h2>
@@ -40,7 +40,77 @@ function UserList() {
                 </>
             )}
 
-            {/*{(currentUser === null || currentUser.role !== "ADMIN") && (*/}
+            {/!*{(currentUser === null || currentUser.role !== "ADMIN") && (*!/}
+            {currentUser && currentUser.role !== "ADMIN" && (
+                <Navigate to="/project/signin" />
+            )}
+        </div>*/
+
+
+        <div className={"col-11"}>
+            {currentUser && currentUser.role === "ADMIN" && (
+            <>
+                <h2>Admin Panel</h2>
+                <table className={"table"}>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {users.map((user) => (
+                        <tr key={user._id}>
+                            <td>
+                                <Link
+                                    key={user._id}
+                                    to={`/project/users/${user._id}`}
+                                    className={"list-group-item"}>
+                                    {user.username}
+                                </Link>
+                            </td>
+                            <td>
+                                <Link
+                                    key={user._id}
+                                    to={`/project/users/${user._id}`}
+                                    className={"list-group-item"}>
+                                    {user.firstName}
+                                </Link>
+                            </td>
+                            <td>
+                                <Link
+                                    key={user._id}
+                                    to={`/project/users/${user._id}`}
+                                    className={"list-group-item"}>
+                                    {user.lastName}
+                                </Link>
+                            </td>
+                            <td>
+                                <Link
+                                    key={user._id}
+                                    to={`/project/users/${user._id}`}
+                                    className={"list-group-item"}>
+                                    {user.email}
+                                </Link>
+                            </td>
+                            <td>
+                                <Link
+                                    key={user._id}
+                                    to={`/project/users/${user._id}`}
+                                    className={"list-group-item"}>
+                                    {user.role}
+                                </Link>
+                            </td>
+                        </tr>))}
+                    </tbody>
+                </table>
+                </>
+            )}
+{/*</div>*/}
+
             {currentUser && currentUser.role !== "ADMIN" && (
                 <Navigate to="/project/signin" />
             )}
