@@ -2,7 +2,7 @@ import {Link, Route, Routes} from "react-router-dom";
 import {Navigate} from "react-router";
 import Home from "./home";
 import Login from "./login";
-import Signup from "./signup";
+import Register from "./register";
 //import Account from "./profile";
 import Search from "./search";
 import Details from "./details";
@@ -27,7 +27,7 @@ function Project() {
                             <Routes>
                                 <Route path="/" element={<Navigate to="home" />} />
                                 <Route path="/home" element={<Home />} />
-                                <Route path="/signup" element={<Signup />} />
+                                <Route path="/register" element={<Register />} />
                                 <Route path="/account" element={<Account />}/>
                                 <Route path="/signin" element={<Signin />} />
                                 <Route path="/search" element={<Search />} />

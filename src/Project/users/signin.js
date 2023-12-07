@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import * as client from "./client";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {setCurrentUser} from "./reducer";
 
@@ -25,7 +25,7 @@ function Signin() {
     };
 
     return(
-        <div>
+        /*<div>
             <h2> Sign In</h2>
             {error && <div className={"alert alert-danger"}>{error.message} </div>}
             <input
@@ -48,6 +48,43 @@ function Signin() {
                 Sign In
             </button>
 
+        </div>*/
+        <div className={"col-10 text-center border border-dark-subtle border-2"}>
+            <h2 className={"mt-2 mb-2"}> Sign In</h2>
+            <div className={"form-group mb-4 row d-flex justify-content-center"}>
+                {error && <div className={"alert alert-danger"}>{error.message} </div>}
+
+                <label className="form-label" htmlFor="inputUsername">Username</label>
+                <input
+                    placeholder={"Input username"}
+                    type={"text"}
+                    className={"form-control w-50"}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    id="inputUsername"
+                />
+            </div>
+            <div className={"form-group mb-4 row d-flex justify-content-center"}>
+                <label className="form-label" htmlFor="inputPassword">Password</label>
+                <input
+                    placeholder={"Password"}
+                    type={"password"}
+                    className={"form-control w-50"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    id={"inputPassword"}
+                />
+            </div>
+            <div className={"row d-flex justify-content-center"}>
+                <button
+                    onClick={signIn}
+                    className={"btn btn-primary w-50 mb-4"}>
+                    Sign In
+                </button>
+            </div>
+            <div className="text-center">
+                <p>Not a member? <Link to={"/project/register"}>Register</Link></p>
+            </div>
         </div>
     );
 }

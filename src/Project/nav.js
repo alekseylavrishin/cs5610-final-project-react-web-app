@@ -20,8 +20,8 @@ function Navigation() {
                         <Link to={"/project/signin"} className={"list-group-item"}>
                             Sign In
                         </Link>
-                        <Link to={"/project/signup"} className={"list-group-item"}>
-                        Signup
+                        <Link to={"/project/register"} className={"list-group-item"}>
+                        Register
                         </Link>
                     </>
                 )}
@@ -31,9 +31,13 @@ function Navigation() {
                 {/*<Link to={"/project/details"} className={"list-group-item"}>
                                 Details
                             </Link>*/}
-                <Link to={"/project/users"} className={"list-group-item"}>
-                    Users
-                </Link>
+
+                {/*uncomment later*/}
+                {/*{currentUser && currentUser.role === "ADMIN" && (*/}
+                    <Link to={"/project/users"} className={"list-group-item"}>
+                        Users
+                    </Link>
+                {/*)}*/}
             </div>
 {/*
             {currentUser && (JSON.stringify(currentUser))}

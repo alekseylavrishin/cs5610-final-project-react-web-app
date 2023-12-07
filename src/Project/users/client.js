@@ -42,3 +42,9 @@ export const signout = async () => {
     return response.data;
 
 }
+
+export const register = async (credentials) => {
+    const response = await request.post(
+        `${USERS_API}/register`, credentials);
+    return response.data;
+};
