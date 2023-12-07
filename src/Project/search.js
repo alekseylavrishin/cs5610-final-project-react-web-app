@@ -8,11 +8,18 @@ function Search() {
     const [results, setResults] = useState(null);
     const [data, setData] = useState(null);
     const navigate = useNavigate();
+    const [error, setError] = useState("");
+
 
     const fetchRecipes = async (search) => {
-        const results = await client.findRecipes(search);
-        setResults(results.results);
-        setSearchTerm(search);
+        try {
+            const results = await client.findRecipes(search);
+            setResults(results.results);
+            setSearchTerm(search);
+        }
+        catch(error) {
+            setError(error.response.data.message)
+        }
     };
 
     useEffect(() => {
@@ -25,7 +32,6 @@ function Search() {
     return(
         <div>
             <h1>Search</h1>
-
             <button
                 onClick={() => navigate(`/project/search/${searchTerm}`)}
                 className={"btn btn-primary float-end"}>
@@ -40,6 +46,7 @@ function Search() {
                 }}
             />
             <h2>Results</h2>
+            {error && <div className={"bg-danger-subtle text-center"}>{error}</div>}
             <ul className={"list-group"}>
                 {results &&
                     results.map((recipe, index) => (

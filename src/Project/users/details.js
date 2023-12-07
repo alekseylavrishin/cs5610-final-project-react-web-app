@@ -82,13 +82,28 @@ function UserDetails() {
                 <div className={"row "} >
                     <ul className={"list-group ms-1"}>
                         <li className={"list-group-item"}>
-                            Likes:
+                            <div className={"w-50 float-start"}>
+                                Likes:
+                            </div>
+                            <div className={"w-50 float-end text-end"}>
+                                {likes.length}
+                            </div>
                         </li>
                         <li className={"list-group-item"}>
-                            Followers:
+                            <div className={"w-50 float-start"}>
+                                Followers:
+                            </div>
+                            <div className={"w-50 float-end text-end"}>
+                                {followers.length}
+                            </div>
                         </li>
                         <li className={"list-group-item"}>
-                            Following:
+                            <div className={"w-50 float-start"}>
+                                Following:
+                            </div>
+                            <div className={"w-50 float-end text-end"}>
+                                {following.length}
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -101,7 +116,7 @@ function UserDetails() {
                         <h3 className={"mb-3"}>{user.username}</h3>
                         <h5 className={"mb-3"}>{user.role}</h5>
                         <h5 className={"mb-3"}>{user.email}</h5>
-                        <p>First Name:
+                        {/*<p>First Name:
                             <input type={"text"} className={"form-control"} value={user.firstName}
                                    onChange={(e) => setUser({...user, firstName: e.target.value})}
                             /></p>
@@ -110,7 +125,7 @@ function UserDetails() {
                         </button>
                         <button className={"btn btn-danger"} onClick={() => deleteUser(user._id)}>
                             Delete
-                        </button>
+                        </button>*/}
 
                         <Tabs
                             defaultActiveKey="Likes"
@@ -122,7 +137,9 @@ function UserDetails() {
                                     {likes.map((like, index) => (
                                         <li key={index} className={"list-group-item"}>
                                             <Link to={`/project/details/${like.recipeId}`}>
-                                                <h5>{like.recipeName}</h5>
+
+                                                <span>{like.recipeName}</span>
+                                                <img width={278} height={185} src={like.recipeImage}/>
                                             </Link>
                                         </li>
                                     ))}
@@ -132,10 +149,25 @@ function UserDetails() {
                                 {followers.length === 0 && (<p>No users are currently following {user.username}</p>)}
                                 <div className={"list-group"}>
                                     {followers.map((follows, index) => (
-                                        <Link key={index} className={"list-group-item"} to={`/project/users/${follows.follower._id}`}>
-                                            {follows.follower.username}
-                                        </Link>
+                                        <li className={"list-group-item row"}>
+                                            <Link key={index}  to={`/project/users/${follows.follower._id}`}>
+                                                <div className={"col-2 float-start"}>
+                                                    <FaCircleUser fontSize={40} className={"me-2"}/>
+                                                </div>
+                                                <div className={"col-5 float-start"}>
+                                                    {follows.follower.username}
+                                                </div>
+                                            </Link>
+                                            <div className={"col-2 float-end"}>
+                                                <button
+                                                    className={"btn btn-primary"}
+                                                    onClick={() => fetchFollowing()}>
+                                                    asdf
+                                                </button>
+                                            </div>
+                                        </li>
                                     ))}
+
                                 </div>
                             </Tab>
                             <Tab eventKey="Following" title="Following">

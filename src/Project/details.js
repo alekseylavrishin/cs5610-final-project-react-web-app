@@ -13,6 +13,8 @@ function Details() {
     const { recipeId } = useParams();
     const [recipe, setRecipe] = useState(null);
     const [likes, setLikes] = useState([]);
+    const [error, setError] = useState("");
+
 
     /*const fetchUser = async () => {
         try {
@@ -24,8 +26,13 @@ function Details() {
     }*/
 
     const fetchRecipe = async () => {
-        const recipe = await client.getRecipeInfo(recipeId);
-        setRecipe(recipe);
+        try {
+            const recipe = await client.getRecipeInfo(recipeId);
+            setRecipe(recipe);
+        }
+        catch(error){
+            setError(error.response.data.message)
+        }
     };
 
     const fetchLikes = async () => {
@@ -61,6 +68,8 @@ function Details() {
 
     return(
         <div>
+            {error && <div className={"bg-danger-subtle text-center"}>{error}</div>}
+
             {recipe &&(
                 <div>
                     {currentUser && (
@@ -75,10 +84,8 @@ function Details() {
                             </button>
                                 )}
                         </>
-                        /*<button onClick={currentUserLikesRecipe} className={"btn btn-primary float-end"}>
-                            Like
-                        </button>*/
                     )}
+
                     <h1 className={"text-capitalize"}>{recipe.title}</h1>
                     <p>{recipe.summary}</p>
                     <img src={recipe.image} alt={recipe.name}/>
