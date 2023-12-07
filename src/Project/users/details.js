@@ -113,14 +113,14 @@ function UserDetails() {
                                 {likes.map((like, index) => (
                                     <li key={index} className={"list-group-item"}>
                                         <Link to={`/project/details/${like.recipeId}`}>
-                                            <h5>{like.recipeId}</h5>
+                                            <h5>{like.recipeName}</h5>
                                         </Link>
                                     </li>
                                 ))}
                             </ul>
                         </Tab>
                         <Tab eventKey="Followers" title="Followers">
-                            {followers.length === 0 && (<p>{user.username} is not following any users yet</p>)}
+                            {followers.length === 0 && (<p>No users are currently following {user.username}</p>)}
                             <div className={"list-group"}>
                                 {followers.map((follows, index) => (
                                     <Link key={index} className={"list-group-item"} to={`/project/users/${follows.follower._id}`}>
@@ -130,7 +130,7 @@ function UserDetails() {
                             </div>
                         </Tab>
                         <Tab eventKey="Following" title="Following">
-                            {following.length === 0 && (<p>No users are currently following {user.username}</p>)}
+                            {following.length === 0 && (<p>{user.username} is not following any users yet</p>)}
                             <div className={"list-group"}>
                                 {following.map((follows, index) => (
                                     <Link key={index} className={"list-group-item"} to={`/project/users/${follows.followed._id}`}>

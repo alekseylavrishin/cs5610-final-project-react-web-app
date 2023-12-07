@@ -36,7 +36,7 @@ function Details() {
     const selectedNutrients = ["Calories", "Fat", "Carbohydrates", "Protein"];
 
     const currentUserLikesRecipe = async () => {
-        const _likes = likesClient.createUserLikesRecipe(currentUser._id, recipeId);
+        const _likes = likesClient.createUserLikesRecipe(currentUser._id, recipeId, recipe.title);
         setLikes([_likes, ...likes]);
         fetchLikes();
     };
@@ -127,7 +127,7 @@ function Details() {
 {/*
                     <pre>{JSON.stringify(recipe.analyzedInstructions[0].steps, null, 2)}</pre>
 */}
-                    <pre>{JSON.stringify(recipe.nutrition.nutrients, null, 2)}</pre>
+                    <pre>{JSON.stringify(recipe, null, 2)}</pre>
                 </div>
                 )}
         </div>
