@@ -6,8 +6,8 @@ const LIKES_API =`${API_BASE}/likes`;
 
 export const findAllLikes = async () => {}
 
-export const createUserLikesRecipe = async (userId, recipeId, recipeName) => {
-    const response = await axios.post(`${USERS_API}/${userId}/likes/${recipeId}`, {recipeName: recipeName})
+export const createUserLikesRecipe = async (userId, recipeId, recipeName, recipeImage) => {
+    const response = await axios.post(`${USERS_API}/${userId}/likes/${recipeId}`, {recipeName: recipeName, recipeImage: recipeImage})
     console.log("recipe " + recipeName);
 }
 export const deleteUserLikesRecipe = async (userId, recipeId) => {

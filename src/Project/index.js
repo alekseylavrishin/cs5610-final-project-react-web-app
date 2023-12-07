@@ -33,7 +33,7 @@ function Project() {
 
                     <div className={"row"}>
                         <Navigation/>
-                        <div className={"col-10"}>
+                        <div className={"col-12"}>
                             <Routes>
                                 <Route path="/" element={<Navigate to="home" />} />
                                 <Route path="/home" element={<Home />} />

@@ -68,7 +68,7 @@ function Navigation() {
 *!/}
         </div>
         </>*/
-        <Navbar expand={"md"} className={"bg bg-body-secondary"}>
+        <Navbar expand={"lg"} className={"bg bg-body-secondary"}>
             <Container>
                 <Navbar.Brand className={"me-5"}>
                     <Link to={"/project/home"} className={"navbar-brand"}>

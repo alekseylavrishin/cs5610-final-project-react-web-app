@@ -36,7 +36,7 @@ function Details() {
     const selectedNutrients = ["Calories", "Fat", "Carbohydrates", "Protein"];
 
     const currentUserLikesRecipe = async () => {
-        const _likes = likesClient.createUserLikesRecipe(currentUser._id, recipeId, recipe.title);
+        const _likes = likesClient.createUserLikesRecipe(currentUser._id, recipeId, recipe.title, recipe.image);
         setLikes([_likes, ...likes]);
         fetchLikes();
     };
