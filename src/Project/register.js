@@ -45,20 +45,23 @@ function Register() {
 
 
     return (
-        <div>
-            <h1>Register</h1>
+        <div className={"col-10 text-center border border-dark-subtle border-2"}>
+            <div className="row d-flex justify-content-center mb-2 mt-2">
+                <h2>Register</h2>
+            </div>
             {error && <div>{error}</div>}
 
-            <form className="row g-3 needs-validation" noValidate>
-                <div className="col-md-4">
-                    <label htmlFor="validationUsername" className="form-label">Username</label>
-                    <div className="input-group has-validation">
+            <form className="row needs-validation" noValidate>
+                <div className="row d-flex justify-content-center mb-2">
+                    <label htmlFor="validationUsername" className="form-label mt-2">Username</label>
+                    <div className="input-group has-validation w-50">
                         <input
                             onKeyDown={handleKeyDown}
                             required={"true"}
-                            className="form-control" id="validationUsername"
+                            className={"form-control"}
+                            id="validationUsername"
                             type={"text"}
-                            placeholder={"username"}
+                            placeholder={"Username"}
                             value={credentials.username}
                             onChange={(e) => setCredentials({
                                 ...credentials,
@@ -69,15 +72,16 @@ function Register() {
                     </div>
                 </div>
 
-                <div className="col-md-4">
+                <div className="row d-flex justify-content-center mb-2">
                     <label htmlFor="validationPassword" className="form-label">Password</label>
-                    <div className="input-group has-validation">
+                    <div className="input-group has-validation w-50">
                         <input
                             onKeyDown={handleKeyDown}
                             required={"true"}
+                            className="form-control"
                             id={"validationPassword"}
                             type={"password"}
-                            placeholder={"password"}
+                            placeholder={"Password"}
                             value={credentials.password}
                             onChange={(e) => setCredentials({
                                 ...credentials,
@@ -88,42 +92,55 @@ function Register() {
                     </div>
                 </div>
 
-                <div className="col-md-4">
-                    <input
+                <div className="row d-flex justify-content-center">
+                    <div className={"w-50"}>
+                        <label htmlFor="inputFirstName" className="form-label">First Name</label>
+                        <input
                         type={"text"}
-                        placeholder={"first name"}
+                        className="form-control mb-2"
+                        placeholder={"First Name"}
                         value={credentials.firstName}
                         onChange={
                         (e) => setCredentials({
                             ...credentials, firstName: e.target.value })}/>
-                    <input
+
+                        <label htmlFor="inputLastName" className="form-label">Last Name</label>
+                        <input
                         type={"text"}
-                        placeholder={"last name"}
+                        className="form-control mb-2"
+                        placeholder={"Last Name"}
                         value={credentials.lastName}
                         onChange={(e) => setCredentials({
                             ...credentials, lastName: e.target.value })}/>
-                    <select
-                        value={credentials.role}
-                        onChange={(e) => setCredentials({
-                            ...credentials, role: e.target.value })}>
-                        <option value="USER">User</option>
-                        <option value="ADMIN">Admin</option>
-                        <option value="INFLUENCER">Influencer</option>
-                    </select>
 
-                    <input
+                        <label htmlFor="userDropdown" className="form-label">User Type</label><br/>
+                        <select
+                            value={credentials.role}
+                            className="dropdown mb-2 w-50"
+                            onChange={(e) => setCredentials({
+                                ...credentials, role: e.target.value })}>
+                            <option value="USER">User</option>
+                            <option value="ADMIN">Admin</option>
+                            <option value="INFLUENCER">Influencer</option>
+                        </select><br/>
+
+                        <label htmlFor="inputEmail" className="form-label">Email</label>
+                        <input
                         onKeyDown={handleKeyDown}
-                        placeholder={"email"}
+                        className="form-control mb-4"
+                        placeholder={"Email"}
                         type={"email"}
                         value={credentials.email}
                         onChange={(e) => setCredentials({
                             ...credentials, email: e.target.value })}/>
+
+
+
+                        <button className={"btn btn-primary w-100 mb-4"} type={"submit"} onClick={signup}>
+                            Signup
+                        </button>
+                    </div>
                 </div>
-
-
-                    <button className={"btn btn-primary"} type={"submit"} onClick={signup}>
-                        Signup
-                    </button>
             </form>
         </div>
 

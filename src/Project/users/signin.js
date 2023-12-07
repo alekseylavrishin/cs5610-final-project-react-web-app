@@ -56,7 +56,7 @@ function Signin() {
 
                 <label className="form-label" htmlFor="inputUsername">Username</label>
                 <input
-                    placeholder={"Input username"}
+                    placeholder={"Username"}
                     type={"text"}
                     className={"form-control w-50"}
                     value={username}
