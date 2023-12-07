@@ -1,7 +1,6 @@
 import {Link, Route, Routes} from "react-router-dom";
 import {Navigate} from "react-router";
 import Home from "./home";
-import Login from "./login";
 import Register from "./register";
 //import Account from "./profile";
 import Search from "./search";

@@ -5,6 +5,9 @@ import * as likesClient from "../likes/client";
 import * as followsClient from "../follows/client";
 import {useSelector} from "react-redux";
 
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+
 
 
 function UserDetails() {
@@ -99,32 +102,47 @@ function UserDetails() {
                     <button className={"btn btn-danger"} onClick={() => deleteUser(user._id)}>
                         Delete
                     </button>
-                    <h3>Likes</h3>
-                    <ul className={"list-group"}>
-                        {likes.map((like, index) => (
-                            <li key={index} className={"list-group-item"}>
-                                <Link to={`/project/details/${like.recipeId}`}>
-                                    <h5>{like.recipeId}</h5>
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                    <h3>Followers</h3>
-                    <div className={"list-group"}>
-                        {followers.map((follows, index) => (
-                            <Link key={index} className={"list-group-item"} to={`/project/users/${follows.follower._id}`}>
-                                {follows.follower.username}
-                            </Link>
-                        ))}
-                    </div>
-                    <h3>Following</h3>
-                    <div className={"list-group"}>
-                        {following.map((follows, index) => (
-                            <Link key={index} className={"list-group-item"} to={`/project/users/${follows.followed._id}`}>
-                                {follows.followed.username}
-                            </Link>
-                        ))}
-                    </div>
+
+                    <Tabs
+                        defaultActiveKey="Likes"
+                        id="uncontrolled-tab-example"
+                        className="mb-3">
+                        <Tab eventKey="Likes" title="Liked Recipes">
+                            {likes.length === 0 && (<p>{user.username} has not liked any recipes yet</p>)}
+                            <ul className={"list-group"}>
+                                {likes.map((like, index) => (
+                                    <li key={index} className={"list-group-item"}>
+                                        <Link to={`/project/details/${like.recipeId}`}>
+                                            <h5>{like.recipeId}</h5>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </Tab>
+                        <Tab eventKey="Followers" title="Followers">
+                            {followers.length === 0 && (<p>{user.username} is not following any users yet</p>)}
+                            <div className={"list-group"}>
+                                {followers.map((follows, index) => (
+                                    <Link key={index} className={"list-group-item"} to={`/project/users/${follows.follower._id}`}>
+                                        {follows.follower.username}
+                                    </Link>
+                                ))}
+                            </div>
+                        </Tab>
+                        <Tab eventKey="Following" title="Following">
+                            {following.length === 0 && (<p>No users are currently following {user.username}</p>)}
+                            <div className={"list-group"}>
+                                {following.map((follows, index) => (
+                                    <Link key={index} className={"list-group-item"} to={`/project/users/${follows.followed._id}`}>
+                                        {follows.followed.username}
+                                    </Link>
+                                ))}
+                            </div>
+                        </Tab>
+                    </Tabs>
+
+
+
                 </div>
             )}
         </div>
