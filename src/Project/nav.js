@@ -5,6 +5,7 @@ import {Button, Container, Form, Nav, Navbar, NavDropdown} from "react-bootstrap
 import {useEffect, useState} from "react";
 import * as client from "./users/client";
 import {setCurrentUser} from "./users/reducer";
+import "./home.css";
 
 function Navigation() {
     const navigate = useNavigate();
@@ -28,91 +29,34 @@ function Navigation() {
 
 
     return(
-        /*<>
-        <div className={"col-2"}>
-            <div className={"list-group"}>
-                <Link to={"/project/home"} className={"list-group-item"}>
-                    Home
-                </Link>
-                {currentUser &&(
-                    <Link to={"/project/account"} className={"list-group-item"}>
-                        Account
-                    </Link>
-                )}
-                {!currentUser && (
-                    <>
-                        <Link to={"/project/signin"} className={"list-group-item"}>
-                            Sign In
-                        </Link>
-                        <Link to={"/project/register"} className={"list-group-item"}>
-                        Register
-                        </Link>
-                    </>
-                )}
-                <Link to={"/project/search"} className={"list-group-item"}>
-                    Search
-                </Link>
-                {/!*<Link to={"/project/details"} className={"list-group-item"}>
-                                Details
-                            </Link>*!/}
-
-                {/!*uncomment later*!/}
-                {/!*{currentUser && currentUser.role === "ADMIN" && (*!/}
-                    <Link to={"/project/users"} className={"list-group-item"}>
-                        Users
-                    </Link>
-                {/!*)}*!/}
-            </div>
-{/!*
-            {currentUser && (JSON.stringify(currentUser))}
-*!/}
-        </div>
-        </>*/
-        <Navbar expand={"lg"} className={"bg bg-body-secondary"}>
+        <Navbar expand={"lg"} className={"bg pj-navbar-background"}>
             <Container>
                 <Navbar.Brand className={"me-5"}>
                     <Link to={"/project/home"} className={"navbar-brand"}>
-                        Recipe Finder <FaUtensils/>
+                        <span className={"pj-navbar-font-title"}>Recipe Finder <FaUtensils/> </span>
                     </Link>
 
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-
-                    {/*<Form className="d-flex">
-                        <Form.Control
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                            onChange={(event) => {
-                                setSearchTerm(event.target.value)
-                            }}
-                        />
-                        <button className="btn btn-success"
-                                onClick={() => navigate(`/project/search/${searchTerm}`)}
-                        ><FaMagnifyingGlass/></button>
-                    </Form>*/}
-
-
                     <Nav className="ms-3 me-auto">
 
                         <Nav.Link className={"me-lg-4"}>
                             <Link to={"/project/home"} className={"list-group-item"}>
-                                Home
+                                <span className={"pj-navbar-font"}>Home</span>
                             </Link>
                         </Nav.Link>
 
                         <Nav.Link className={"me-lg-4"}>
                             <Link to={"/project/search"} className={"list-group-item"}>
-                                Search For a Recipe
+                                <span className={"pj-navbar-font"}>Search For a Recipe</span>
                             </Link>
                         </Nav.Link>
 
                         {currentUser &&(
                             <>
                                 <Nav.Link className={"me-lg-4"}>
-                                    <span className={"list-group-item"}>
+                                    <span className={"list-group-item pj-navbar-font"}>
                                         <FaCircleUser className={"me-1"}/>{currentUser.username}
                                     </span>
                                 </Nav.Link>
@@ -122,13 +66,13 @@ function Navigation() {
                                             My Account
                                         </Link>*/}
                                     <Link to={`/project/users/${currentUser._id}`} className={"list-group-item"}>
-                                        My Account
+                                        <span className={"pj-navbar-font"}>My Account</span>
                                     </Link>
                                 </Nav.Link>
 
                                 <Nav.Link className={"me-lg-4"}>
                                     <button onClick={signout} className={"list-group-item"}>
-                                        Sign Out
+                                        <span className={"pj-navbar-font"}>Sign Out</span>
                                     </button>
                                 </Nav.Link>
                             </>
@@ -148,18 +92,12 @@ function Navigation() {
                                 </Nav.Link>
                             </>
                         )}
-                      {/*  <Nav.Link>
-                            <Link to={"/project/search"} className={"list-group-item"}>
-                                Search
-                            </Link>
-                        </Nav.Link>*/}
-
 
                        {currentUser && currentUser.role === "ADMIN" && (
                            <Nav.Link className={"me-auto"}>
-                        <Link to={"/project/users"} className={"list-group-item"}>
-                            Users
-                        </Link>
+                                <Link to={"/project/users"} className={"list-group-item"}>
+                                    Users
+                                </Link>
                            </Nav.Link>
                            )}
 

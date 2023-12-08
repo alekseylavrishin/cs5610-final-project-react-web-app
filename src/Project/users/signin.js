@@ -17,7 +17,7 @@ function Signin() {
             const credentials = {username: username, password: password};
             const user = await client.signin(credentials);
             dispatch(setCurrentUser(user));
-            navigate("/project/account")
+            navigate(`/project/users/${user._id}`)
         }
         catch (error){
             setError(error);
@@ -25,34 +25,10 @@ function Signin() {
     };
 
     return(
-        /*<div>
-            <h2> Sign In</h2>
-            {error && <div className={"alert alert-danger"}>{error.message} </div>}
-            <input
-                type={"text"}
-                className={"form-control"}
-                placeholder={"Username"}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-                type={"password"}
-                className={"form-control"}
-                placeholder={"Password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button
-                onClick={signIn}
-                className={"btn btn-primary"}>
-                Sign In
-            </button>
-
-        </div>*/
-        <div className={"col-10 text-center border border-dark-subtle border-2"}>
+        <div className={"col-12 text-center border border-dark-subtle border-2 ms-4 me-4 mt-4 mb-4"}>
             <h2 className={"mt-2 mb-2"}> Sign In</h2>
             <div className={"form-group mb-4 row d-flex justify-content-center"}>
-                {error && <div className={"alert alert-danger"}>{error.message} </div>}
+                {error && <div className={"alert alert-danger col-11"}>{error.message} </div>}
 
                 <label className="form-label" htmlFor="inputUsername">Username</label>
                 <input

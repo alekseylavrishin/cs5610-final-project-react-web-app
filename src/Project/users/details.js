@@ -10,7 +10,6 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 
 
-
 function UserDetails() {
     const [user, setUser] = useState(null);
     const [likes, setLikes] = useState([]);
@@ -33,6 +32,8 @@ function UserDetails() {
     const updateUser = async () => {
         const status = await client.updateUser(id, user);
         //setUser(updatedUser);
+        fetchUser();
+
     };
 
     const deleteUser = async (id) => {
@@ -123,8 +124,6 @@ function UserDetails() {
                         <h5 className={"mb-3"}>{user.role}</h5>
                         <h5 className={"mb-3"}>{user.email}</h5>
 
-
-
                         {/*<p>First Name:
                             <input type={"text"} className={"form-control"} value={user.firstName}
                                    onChange={(e) => setUser({...user, firstName: e.target.value})}
@@ -157,15 +156,6 @@ function UserDetails() {
                                                 </div>
 
                                             </Link>
-                                            <div className={"col-2 float-end"}>
-                                                {currentUser && currentUser._id === id && (
-                                                    <button
-                                                        className={"btn btn-primary"}
-                                                        onClick={() => fetchFollowing()}>
-                                                        asdf
-                                                    </button>
-                                                )}
-                                            </div>
                                         </li>
                                     ))}
                                 </ul>
@@ -228,8 +218,6 @@ function UserDetails() {
                             </Tab>
                             {currentUser && currentUser._id === id && (
                                 <Tab eventKey="myInfo" title="My Info">
-
-
                                     <div>
                                         <div className={"row"} >
                                             <ul className={"list-group ms-1 mt-4"}>
@@ -282,6 +270,37 @@ function UserDetails() {
 
 
                                     <div>
+                                        <p>Username: {user.username}</p>
+                                        <input
+                                            type="email"
+                                            className="form-control"
+                                            value={user.email}
+                                            onChange={(e) => setUser({ ...user, email: e.target.value })}
+                                        />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={user.firstName}
+                                            onChange={(e) => setUser({ ...user, firstName: e.target.value })}
+                                        />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={user.lastName}
+                                            onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+                                        />
+                                        <button onClick={updateUser} className="btn btn-primary">
+                                            Update
+                                        </button>
+
+                                    </div>
+
+
+
+
+
+
+                                    <div>
                                         <div className={"row"} >
                                             <ul className={"list-group ms-1 mt-4"}>
                                                 <li className={"list-group-item"}>
@@ -289,7 +308,7 @@ function UserDetails() {
                                                         Username:
                                                     </div>
                                                     <div className={"w-50 float-end text-end"}>
-                                                        {currentUser.username}
+                                                        {user.username}
                                                     </div>
                                                 </li>
                                                 <li className={"list-group-item"}>
@@ -297,7 +316,7 @@ function UserDetails() {
                                                         First Name:
                                                     </div>
                                                     <div className={"w-50 float-end text-end"}>
-                                                        {currentUser.firstName}                                                    </div>
+                                                        {user.firstName}                                                    </div>
                                                 </li>
                                                 <li className={"list-group-item"}>
                                                     <div className={"w-50 float-start"}>
@@ -328,13 +347,7 @@ function UserDetails() {
                                     </div>
                                 </Tab>
                             )}
-
-
-
                         </Tabs>
-
-
-
                     </div>
                 )}
             </div>
@@ -356,11 +369,7 @@ function UserDetails() {
                             )}
                         </>
                     )}
-                {currentUser && currentUser._id === id && (
-                    <button onClick={followUser} className={"btn btn-warning float-end me-lg-5 me-md-3 me-sm-0"}>
-                        Edit
-                    </button>
-                )}
+
 
 
             </div>

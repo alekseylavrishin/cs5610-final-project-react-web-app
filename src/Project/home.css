@@ -1,0 +1,74 @@
+/*NEW*/
+.wd-dashboard-column {
+    width: 90%;
+    height: 100%;
+    margin-left: 110px;
+    overflow: hidden;
+}
+.wd-dashboard-h1 {
+    color: grey;
+}
+.wd-dashboard-card {
+    width: 250px;
+    height: 250px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    padding: 5px;
+    box-shadow: 0 2px 4px grey;
+
+}
+.wd-dashboard-card-img {
+    height: 140px;
+    min-height: 140px;
+    width: 210px;
+    margin: 1px 1px 1px;
+    background-color: cornflowerblue;
+}
+.wd-dashboard-card-a {
+    font-size: 14px;
+    margin: 2px;
+    color: cornflowerblue;
+    text-decoration: none;
+}
+.wd-dashboard-card-a:hover {
+    text-decoration: underline #bf0f0f;
+    color: cornflowerblue;
+
+}
+.wd-dashboard-card-body {
+    padding: 5px;
+}
+.wd-dashboard-card-body-p{
+    color: grey;
+}
+
+.pj-navbar-background {
+    background-color: #63e6be;
+}
+
+.pj-navbar-font {
+    color: #183153;
+    font-size: medium;
+
+}
+
+.pj-navbar-font-title {
+    color: #183153;
+    font-size: larger;
+}
+
+
+
+/*body, html {
+    height: 100%;
+    margin: 0;
+}
+.wd-column {
+    min-height: 100%;
+    float: left;
+    padding-top: 20px;
+    display: inline-block;
+    white-space: nowrap;
+
+
+}*/
