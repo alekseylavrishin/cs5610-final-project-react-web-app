@@ -66,6 +66,7 @@ function UserDetails() {
         });
     };
 
+
     useEffect(() => {
         fetchUser();
         fetchLikes();
@@ -75,12 +76,17 @@ function UserDetails() {
 
     return (
         <div className={"row mt-4 ms-1 me-1"}>
-            <div className={"col-2 float-start"}>
-                <div className={"row text-center mb-4"} >
+
+            {/*{currentUser && currentUser._id === id && (
+                navigate("/project/account")
+            )}*/}
+
+            <div className={"col-2 col-sm-3 col-md-2 col-lg-2 float-start"}>
+                <div className={"row text-center mb-4 mt-1"} >
                     <FaCircleUser className={"display-1"}/>
                 </div>
                 <div className={"row "} >
-                    <ul className={"list-group ms-1"}>
+                    <ul className={"list-group ms-1 mt-4"}>
                         <li className={"list-group-item"}>
                             <div className={"w-50 float-start"}>
                                 Likes:
@@ -110,12 +116,15 @@ function UserDetails() {
 
             </div>
 
-            <div className={"col-8"}>
+            <div className={"col-lg-8 col-sm-8"}>
                 {user && (
                     <div>
                         <h3 className={"mb-3"}>{user.username}</h3>
                         <h5 className={"mb-3"}>{user.role}</h5>
                         <h5 className={"mb-3"}>{user.email}</h5>
+
+
+
                         {/*<p>First Name:
                             <input type={"text"} className={"form-control"} value={user.firstName}
                                    onChange={(e) => setUser({...user, firstName: e.target.value})}
@@ -137,10 +146,26 @@ function UserDetails() {
                                     {likes.map((like, index) => (
                                         <li key={index} className={"list-group-item"}>
                                             <Link to={`/project/details/${like.recipeId}`}>
-
+                                                <div className={"float-start col-3"}>
+                                                    <img className={"rounded"}
+                                                        width={208}
+                                                         height={138.75}
+                                                         src={like.recipeImage}/>
+                                                </div>
+                                                <div className={"float-lg-start float-md-end float-sm-end float-xs-end col-6 ps-4 ms-4"}>
                                                 <span>{like.recipeName}</span>
-                                                <img width={278} height={185} src={like.recipeImage}/>
+                                                </div>
+
                                             </Link>
+                                            <div className={"col-2 float-end"}>
+                                                {currentUser && currentUser._id === id && (
+                                                    <button
+                                                        className={"btn btn-primary"}
+                                                        onClick={() => fetchFollowing()}>
+                                                        asdf
+                                                    </button>
+                                                )}
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
@@ -154,16 +179,18 @@ function UserDetails() {
                                                 <div className={"col-2 float-start"}>
                                                     <FaCircleUser fontSize={40} className={"me-2"}/>
                                                 </div>
-                                                <div className={"col-5 float-start"}>
+                                                <div className={"col-5 float-start mt-2 mb-2"}>
                                                     {follows.follower.username}
                                                 </div>
                                             </Link>
                                             <div className={"col-2 float-end"}>
-                                                <button
-                                                    className={"btn btn-primary"}
-                                                    onClick={() => fetchFollowing()}>
-                                                    asdf
-                                                </button>
+                                                {currentUser && currentUser._id === id && (
+                                                    <button
+                                                        className={"btn btn-primary"}
+                                                        onClick={() => fetchFollowing()}>
+                                                        asdf
+                                                    </button>
+                                                )}
                                             </div>
                                         </li>
                                     ))}
@@ -172,14 +199,138 @@ function UserDetails() {
                             </Tab>
                             <Tab eventKey="Following" title="Following">
                                 {following.length === 0 && (<p>{user.username} is not following any users yet</p>)}
+
+
                                 <div className={"list-group"}>
                                     {following.map((follows, index) => (
-                                        <Link key={index} className={"list-group-item"} to={`/project/users/${follows.followed._id}`}>
-                                            {follows.followed.username}
-                                        </Link>
+                                        <li className={"list-group-item row"}>
+                                            <Link key={index}  to={`/project/users/${follows.followed._id}`}>
+                                                <div className={"col-2 float-start"}>
+                                                    <FaCircleUser fontSize={40} className={"me-2"}/>
+                                                </div>
+                                                <div className={"col-5 float-start mt-2 mb-2"}>
+                                                    {follows.followed.username}
+                                                </div>
+                                            </Link>
+                                            <div className={"col-2 float-end"}>
+                                                {currentUser && currentUser._id === id && (
+                                                    <button
+                                                    className={"btn btn-danger"}
+                                                    onClick={() => fetchFollowing()}>
+                                                    Unfollow
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </li>
                                     ))}
+
                                 </div>
                             </Tab>
+                            {currentUser && currentUser._id === id && (
+                                <Tab eventKey="myInfo" title="My Info">
+
+
+                                    <div>
+                                        <div className={"row"} >
+                                            <ul className={"list-group ms-1 mt-4"}>
+                                                <li className={"list-group-item"}>
+                                                    <div className={"w-50 float-start"}>
+                                                        Username:
+                                                    </div>
+                                                    <div className={"w-50 float-end text-end"}>
+                                                        {currentUser.username}
+                                                    </div>
+                                                </li>
+                                                <li className={"list-group-item"}>
+                                                    <div className={"w-50 float-start"}>
+                                                        First Name:
+                                                    </div>
+                                                    <div className={"w-50 float-end text-end"}>
+                                                        {currentUser.firstName}                                                    </div>
+                                                </li>
+                                                <li className={"list-group-item"}>
+                                                    <div className={"w-50 float-start"}>
+                                                        Last Name:
+                                                    </div>
+                                                    <div className={"w-50 float-end text-end"}>
+                                                        {currentUser.lastName}
+                                                    </div>
+                                                </li>
+                                                <li className={"list-group-item"}>
+                                                    <div className={"w-50 float-start"}>
+                                                        Email:
+                                                    </div>
+                                                    <div className={"w-50 float-end text-end"}>
+                                                        {currentUser.email}
+                                                    </div>
+                                                </li>
+                                                <li className={"list-group-item"}>
+                                                    <div className={"w-50 float-start"}>
+                                                        role:
+                                                    </div>
+                                                    <div className={"w-50 float-end text-end"}>
+                                                        {currentUser.role}
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </Tab>
+                            )}
+                            {currentUser && currentUser._id === id && (
+                                <Tab eventKey="edit" title="Edit">
+
+
+                                    <div>
+                                        <div className={"row"} >
+                                            <ul className={"list-group ms-1 mt-4"}>
+                                                <li className={"list-group-item"}>
+                                                    <div className={"w-50 float-start"}>
+                                                        Username:
+                                                    </div>
+                                                    <div className={"w-50 float-end text-end"}>
+                                                        {currentUser.username}
+                                                    </div>
+                                                </li>
+                                                <li className={"list-group-item"}>
+                                                    <div className={"w-50 float-start"}>
+                                                        First Name:
+                                                    </div>
+                                                    <div className={"w-50 float-end text-end"}>
+                                                        {currentUser.firstName}                                                    </div>
+                                                </li>
+                                                <li className={"list-group-item"}>
+                                                    <div className={"w-50 float-start"}>
+                                                        Last Name:
+                                                    </div>
+                                                    <div className={"w-50 float-end text-end"}>
+                                                        {currentUser.lastName}
+                                                    </div>
+                                                </li>
+                                                <li className={"list-group-item"}>
+                                                    <div className={"w-50 float-start"}>
+                                                        Email:
+                                                    </div>
+                                                    <div className={"w-50 float-end text-end"}>
+                                                        {currentUser.email}
+                                                    </div>
+                                                </li>
+                                                <li className={"list-group-item"}>
+                                                    <div className={"w-50 float-start"}>
+                                                        role:
+                                                    </div>
+                                                    <div className={"w-50 float-end text-end"}>
+                                                        {currentUser.role}
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </Tab>
+                            )}
+
+
+
                         </Tabs>
 
 
@@ -192,20 +343,25 @@ function UserDetails() {
 
 
             <div className={"col-2 float-end text-center"}>
-
                     {currentUser && currentUser._id !== id &&(
                         <>
                         {alreadyFollowing() ? (
-                            <button onClick={unFollowUser} className={"btn btn-danger float-end me-lg-5 me-md-3 me-sm-0"}>
+                            <button onClick={unFollowUser} className={"btn btn-danger float-end me-lg-5 me-md-2 me-sm-0"}>
                                 Unfollow
                             </button>
                             ) : (
-                            <button onClick={followUser} className={"btn btn-warning float-end"}>
+                            <button onClick={followUser} className={"btn btn-warning float-end me-lg-5 me-md-2 me-sm-0"}>
                                 Follow
                             </button>
                             )}
                         </>
                     )}
+                {currentUser && currentUser._id === id && (
+                    <button onClick={followUser} className={"btn btn-warning float-end me-lg-5 me-md-3 me-sm-0"}>
+                        Edit
+                    </button>
+                )}
+
 
             </div>
 

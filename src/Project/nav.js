@@ -118,9 +118,12 @@ function Navigation() {
                                 </Nav.Link>
 
                                 <Nav.Link className={"me-lg-4"}>
-                                        <Link to={"/project/account"} className={"list-group-item"}>
+                                        {/*<Link to={"/project/account"} className={"list-group-item"}>
                                             My Account
-                                        </Link>
+                                        </Link>*/}
+                                    <Link to={`/project/users/${currentUser._id}`} className={"list-group-item"}>
+                                        My Account
+                                    </Link>
                                 </Nav.Link>
 
                                 <Nav.Link className={"me-lg-4"}>

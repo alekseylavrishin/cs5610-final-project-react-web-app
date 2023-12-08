@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "./reducer";
+import UserDetails from "./details";
 
 function Account() {
     const [user, setUser] = useState(null);
@@ -29,6 +30,7 @@ function Account() {
         fetchUser();
     }, []);
     return (
+
         <div>
             <h1>Account</h1>
             {user && (
