@@ -45,9 +45,10 @@ function Register() {
 
 
     return (
-        <div className={"col-10 text-center border border-dark-subtle border-2"}>
+        <div className={"row justify-content-center"}>
+        <div className={"col-10 text-center border border-dark-subtle border-2 mt-4"}>
             <div className="row d-flex justify-content-center mb-2 mt-2">
-                <h2>Register</h2>
+                <h2>Register for Recipe Finder</h2>
             </div>
             {error && <div>{error}</div>}
 
@@ -136,12 +137,13 @@ function Register() {
 
 
 
-                        <button className={"btn btn-primary w-100 mb-4"} type={"submit"} onClick={signup}>
-                            Signup
+                        <button className={"btn btn-light btn-outline-dark w-100 mb-4"} type={"submit"} onClick={signup}>
+                            Sign Up
                         </button>
                     </div>
                 </div>
             </form>
+        </div>
         </div>
 
 
