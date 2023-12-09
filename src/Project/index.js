@@ -12,6 +12,7 @@ import Navigation from "./nav";
 import store from "./store";
 import {Provider} from "react-redux";
 import CurrentUser from "./users/currentUser";
+import DetailsPH from "./detailsPlaceholder";
 
 function Project() {
     return(
@@ -32,6 +33,7 @@ function Project() {
                                 <Route path="/details/:recipeId" element={<Details />} />
                                 <Route path="/users" element={<UserList />} />
                                 <Route path="users/:id" element={<UserDetails />}/>
+                                <Route path={"/detailsPH"} element={<DetailsPH/>}/>
                             </Routes>
                         </div>
                     </div>

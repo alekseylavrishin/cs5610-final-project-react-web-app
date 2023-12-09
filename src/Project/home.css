@@ -57,6 +57,39 @@
     font-size: larger;
 }
 
+.pj-recipe-nutrition {
+    background-color: #f5f6ea;
+}
+
+/*.pj-recipe-li {
+    color: #e7ab46;
+
+}*/
+li {
+    color: #e7ab46;
+}
+
+li span{
+    color: black;
+}
+
+a {
+    color: black;
+}
+
+.black-font {
+    color: #183153;
+    text-decoration-color: black;
+}
+
+.nav-tabs .nav-link {
+    color: #183153;
+
+}
+
+.nav-tabs .nav-link:hover {
+    color: #183153;
+}
 
 
 /*body, html {

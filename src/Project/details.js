@@ -5,9 +5,9 @@ import * as userClient from "./users/client";
 import * as likesClient from "./likes/client";
 import {useSelector} from "react-redux";
 import {deleteUserLikesRecipe} from "./likes/client";
+import {FaCircleUser} from "react-icons/fa6";
 
 function Details() {
-    //const [currentUser ,setCurrentUser] = useState(null);
     const {currentUser} = useSelector((state) => state.userReducer);
 
     const { recipeId } = useParams();
@@ -15,15 +15,6 @@ function Details() {
     const [likes, setLikes] = useState([]);
     const [error, setError] = useState("");
 
-
-    /*const fetchUser = async () => {
-        try {
-            const user = await userClient.account();
-            setCurrentUser(user);
-        } catch (error){
-            setCurrentUser(null);
-        }
-    }*/
 
     const fetchRecipe = async () => {
         try {
@@ -67,76 +58,120 @@ function Details() {
     }, []);
 
     return(
-        <div>
+        <div className={"ms-4 me-4 mt-4 mb-3 row justify-content-center"}>
             {error && <div className={"bg-danger-subtle text-center"}>{error}</div>}
 
+
             {recipe &&(
-                <div>
+                <div className={"col-10"}>
                     {currentUser && (
                         <>
                             {alreadyLiked() ? (
-                                <button onClick={deleteUserLikesRecipe} className={"btn btn-primary float-end"}>
+                                <button onClick={deleteUserLikesRecipe} className={"btn btn-light btn-outline-dark float-end"}>
                                     Liked
                                 </button>
-                                ) : (
-                            <button onClick={currentUserLikesRecipe} className={"btn btn-primary float-end"}>
-                                Like
-                            </button>
-                                )}
+                            ) : (
+                                <button onClick={currentUserLikesRecipe} className={"btn btn-light btn-outline-dark float-end"}>
+                                    Like
+                                </button>
+                            )}
                         </>
                     )}
+                    <div>
+                        <div className={"col-12 d-flex"}>
+                            <div className={"col-6 float-start align-self-center ps-1 pe-1"}>
+                                <h1 className={"text-capitalize"}>{recipe.title}</h1>
+                            </div>
 
-                    <h1 className={"text-capitalize"}>{recipe.title}</h1>
-                    <p>{recipe.summary}</p>
-                    <img src={recipe.image} alt={recipe.name}/>
-                    <div className={"row bg-secondary-subtle"}>
-                        { recipe.nutrition.nutrients
-                            .filter(nutrient => selectedNutrients.includes(nutrient.name))
-                            .map(({name, amount, unit}) => ({name, amount, unit}))
-                            .map((n, index) => (
-                                <div className={"col-sm-3"}>
-                                    {n.name} <br/> {n.amount}{n.unit}
+                            <div className={"col-6 float-end align-self-center"}>
+                                <img className={"rounded"} height={277.5} width={417} src={recipe.image} alt={recipe.name}/>
+
+                            </div>
+                        </div>
+                        <hr/>
+                        <h5><span className={"fw-semibold"}>Total Time</span> {recipe.readyInMinutes} minutes</h5>
+
+
+                        <div className={"row mb-4 mt-4"}>
+                            <div className="mb-3 pt-2 pb-2 pj-recipe-nutrition justify-content-center float-start container d-flex flex-row flex-wrap col-8">
+                                <div className={"col-12"}>
+                                    <h4 className={"fw-semibold"}>Nutrition Facts:</h4>
                                 </div>
+                                {/*<div className={"row"}>
+                                <div className={"w-75"}>*/}
+
+                                { recipe.nutrition.nutrients
+                                    .filter(nutrient => selectedNutrients.includes(nutrient.name))
+                                    .map(({name, amount, unit}) => ({name, amount, unit}))
+                                    .map((n, index) => (
+                                        <div className={"col-sm-6 col-md-4 col-lg-3 pj-recipe-nutrition pt-2 pb-2 ps-3 pe-3"}>
+                                            <span>{n.name}</span> <br/> <span>{n.amount}{n.unit}</span>
+                                        </div>
+                                    ))}
+                                {/*</div>*/}
+                            </div>
+                            <hr/>
+                        </div>
+
+
+
+                        <div className={"mb-4 row"}>
+                            <div dangerouslySetInnerHTML={{__html: recipe.summary}}></div>
+                            {/*<p>{Recipe.summary}</p>*/}
+                        </div>
+
+                        {/*<h3>Ready in {Recipe.readyInMinutes} minutes</h3>*/}
+                        <h4 className={"fw-semibold"}>Ingredients:</h4>
+                        <ul className={"ms-3"} >
+                            {recipe.extendedIngredients.map((ingredient, index) => (
+                                <li className={"pj-recipe-li"} key={index}>
+                                    <span>{ingredient.original}</span>
+                                </li>
                             ))}
+                        </ul>
+                        {/*<h3>Recipe Overview:</h3>
+                    <p>{Recipe.instructions}</p>*/}
+                        <h4 className={"fw-semibold mb-2 mt-3"}>Preparation Instructions:</h4>
+                        <ol className={"list-group-numbered"}>
+                            {recipe.analyzedInstructions[0].steps.map((step, index) => (
+                                <li className={"list-group-item mb-2"} key={index}>
+                                    {step.step}
+                                </li>
+                            ))}
+                        </ol>
+
+                        <div className={"row mb-4"}>
+                            <hr/>
+
+                            <h4 className={"fw-semibold mb-2 mt-3"}>Liked by</h4>
+                            {likes.length === 0 && (
+                                <span>No users have liked this recipe yet!</span>
+                            )}
+                            <ul className={"list-group ms-5 me-5"}>
+                                {likes?.map((like, index) => (
+                                    <li className={"list-group-item row"}>
+                                        <Link className={"pj-navbar-font"} key={index}  to={`/project/users/${like.user?._id}`}>
+                                            <div className={"col-2 float-start"}>
+                                                <FaCircleUser fontSize={40} className={"ms-2 me-2"}/>
+                                            </div>
+                                            <div className={"col-5 float-start mt-2 mb-2"}>
+                                                {like?.user?.username}
+                                            </div>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+
+                        </div>
 
                     </div>
-                    <h2>Liked by</h2>
-                    <ul className={"list-group"}>
-                        {likes?.map((like, index) => (
-                            <li className={"list-group-item"} key={index}>
-                                <Link to={`/project/users/${like.user?._id}`}>
-                                    {like?.user?.username}
-                                </Link>
-                            </li>
-                            ))}
-                    </ul>
 
-                    <h3>Ready in {recipe.readyInMinutes} minutes</h3>
-                    <h4>Ingredients:</h4>
-                    <ul >
-                        {recipe.extendedIngredients.map((ingredient, index) => (
-                            <li  key={index}>
-                                {ingredient.original}
-                            </li>
-                        ))}
-                    </ul>
-                    <h3>Recipe Overview:</h3>
-                    <p>{recipe.instructions}</p>
-                    <h3>Preparation Instructions:</h3>
-                    <ol className={"list-group-numbered"}>
-                        {recipe.analyzedInstructions[0].steps.map((step, index) => (
-                            <li className={"list-group-item"} key={index}>
-                                {step.step}
-                            </li>
-                        ))}
-                    </ol>
-                {/*<pre>{JSON.stringify(recipe, null, 2)}</pre>*/}
-{/*
-                    <pre>{JSON.stringify(recipe.analyzedInstructions[0].steps, null, 2)}</pre>
+                    {/*
+                    <pre>{JSON.stringify(Recipe, null, 2)}</pre>
 */}
-                    <pre>{JSON.stringify(recipe, null, 2)}</pre>
+
                 </div>
-                )}
+            )}
         </div>
     );
 }

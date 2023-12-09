@@ -38,7 +38,7 @@ function UserDetails() {
 
     const deleteUser = async (id) => {
         const status = await client.deleteUser(id);
-        navigate("/project/users");
+        navigate("/project/home");
     }
 
     const unFollowUser = async () => {
@@ -84,7 +84,7 @@ function UserDetails() {
 
             <div className={"col-2 col-sm-3 col-md-2 col-lg-2 float-start"}>
                 <div className={"row text-center mb-4 mt-1"} >
-                    <FaCircleUser className={"display-1"}/>
+                    <FaCircleUser className={"display-1 pj-navbar-font"}/>
                 </div>
                 <div className={"row "} >
                     <ul className={"list-group ms-1 mt-4"}>
@@ -138,8 +138,8 @@ function UserDetails() {
                         <Tabs
                             defaultActiveKey="Likes"
                             id="uncontrolled-tab-example"
-                            className="mb-3">
-                            <Tab eventKey="Likes" title="Liked Recipes">
+                            className="mb-3 pj-navbar-font">
+                            <Tab eventKey="Likes" title="Liked Recipes" >
                                 {likes.length === 0 && (<p>{user.username} has not liked any recipes yet</p>)}
                                 <ul className={"list-group"}>
                                     {likes.map((like, index) => (
@@ -267,47 +267,14 @@ function UserDetails() {
                             )}
                             {currentUser && currentUser._id === id && (
                                 <Tab eventKey="edit" title="Edit">
-
-
-                                    <div>
-                                        <p>Username: {user.username}</p>
-                                        <input
-                                            type="email"
-                                            className="form-control"
-                                            value={user.email}
-                                            onChange={(e) => setUser({ ...user, email: e.target.value })}
-                                        />
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={user.firstName}
-                                            onChange={(e) => setUser({ ...user, firstName: e.target.value })}
-                                        />
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={user.lastName}
-                                            onChange={(e) => setUser({ ...user, lastName: e.target.value })}
-                                        />
-                                        <button onClick={updateUser} className="btn btn-primary">
-                                            Update
-                                        </button>
-
-                                    </div>
-
-
-
-
-
-
                                     <div>
                                         <div className={"row"} >
-                                            <ul className={"list-group ms-1 mt-4"}>
+                                            <ul className={"list-group ms-1 mt-4 mb-4"}>
                                                 <li className={"list-group-item"}>
                                                     <div className={"w-50 float-start"}>
                                                         Username:
                                                     </div>
-                                                    <div className={"w-50 float-end text-end"}>
+                                                    <div className={"w-50 float-end text-end pe-2"}>
                                                         {user.username}
                                                     </div>
                                                 </li>
@@ -316,21 +283,32 @@ function UserDetails() {
                                                         First Name:
                                                     </div>
                                                     <div className={"w-50 float-end text-end"}>
-                                                        {user.firstName}                                                    </div>
+                                                        <input
+                                                            type="text"
+                                                            className="form-control text-end"
+                                                            value={user.firstName}
+                                                            onChange={(e) => setUser({ ...user, firstName: e.target.value })}
+                                                        />
+                                                    </div>
                                                 </li>
                                                 <li className={"list-group-item"}>
                                                     <div className={"w-50 float-start"}>
                                                         Last Name:
                                                     </div>
                                                     <div className={"w-50 float-end text-end"}>
-                                                        {currentUser.lastName}
+                                                        <input
+                                                            type="text"
+                                                            className="form-control text-end"
+                                                            value={user.lastName}
+                                                            onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+                                                        />
                                                     </div>
                                                 </li>
                                                 <li className={"list-group-item"}>
                                                     <div className={"w-50 float-start"}>
                                                         Email:
                                                     </div>
-                                                    <div className={"w-50 float-end text-end"}>
+                                                    <div className={"w-50 float-end text-end pe-2"}>
                                                         {currentUser.email}
                                                     </div>
                                                 </li>
@@ -338,11 +316,17 @@ function UserDetails() {
                                                     <div className={"w-50 float-start"}>
                                                         role:
                                                     </div>
-                                                    <div className={"w-50 float-end text-end"}>
+                                                    <div className={"w-50 float-end text-end pe-2"}>
                                                         {currentUser.role}
                                                     </div>
                                                 </li>
                                             </ul>
+                                            <button onClick={updateUser} className=" btn btn-outline-primary ms-2 me-2 mb-3">
+                                                Update Account
+                                            </button>
+                                           {/* <button onClick={deleteUser(user._id)} className="btn btn-outline-danger ms-2 me-2">
+                                                Delete Account
+                                            </button>*/}
                                         </div>
                                     </div>
                                 </Tab>

@@ -1,18 +1,23 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import * as userClient from "./users/client";
+import {setCurrentUser} from "./users/reducer";
+import {useDispatch} from "react-redux";
 
 
 function Register() {
     const [error, setError] = useState("");
     const [credentials, setCredentials] = useState({
-        username: "", password: "", firstName: "", lastName: "", role: "", email: "" });
+        username: "", password: "", firstName: "", lastName: "", role: "USER", email: "" });
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const signup = async () => {
         try {
             if( credentials.username !== "" || credentials.password !== "") {
-                await userClient.register(credentials);
-                navigate("/project/account");
+                const user = await userClient.register(credentials);
+                dispatch(setCurrentUser(user));
+                navigate(`/project/users/${user._id}`);
             }
         } catch (err) {
             setError(err.response.data.message);
@@ -120,7 +125,7 @@ function Register() {
                             className="dropdown mb-2 w-50"
                             onChange={(e) => setCredentials({
                                 ...credentials, role: e.target.value })}>
-                            <option value="USER">User</option>
+                            <option value="USER" selected>User</option>
                             <option value="ADMIN">Admin</option>
                             <option value="INFLUENCER">Influencer</option>
                         </select><br/>

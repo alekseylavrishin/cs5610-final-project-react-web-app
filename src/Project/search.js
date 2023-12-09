@@ -30,22 +30,32 @@ function Search() {
 
 
     return(
-        <div>
-            <h1>Search</h1>
-            <button
-                onClick={() => navigate(`/project/search/${searchTerm}`)}
-                className={"btn btn-primary float-end"}>
-                Search
-            </button>
-            <input
-                type={"text"}
-                className={"form-control w-75"}
-                placeholder={"Search..."}
-                onChange={(event) => {
-                    setSearchTerm(event.target.value)
-                }}
-            />
-            <h2>Results</h2>
+        <div className={"ms-3 me-3 mt-3"}>
+            <div className={"row"}>
+                <div className={"row ms-3"}>
+                    <h2>Search for a Recipe</h2>
+                </div>
+                <div className={"row ms-3"}>
+                    <div className={"col-6 float-start"}>
+                        <input
+                            type={"text"}
+                            className={"form-control"}
+                            placeholder={"Search..."}
+                            onChange={(event) => {
+                                setSearchTerm(event.target.value)
+                            }} />
+                    </div>
+                    <div className={"col-6"}>
+                        <button
+                            type={"submit"}
+                            onClick={() => navigate(`/project/search/${searchTerm}`)}
+                            className={"btn btn-light btn-outline-dark float-start"}>
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+           {/* <h2>Results</h2>
             {error && <div className={"bg-danger-subtle text-center"}>{error}</div>}
             <ul className={"list-group"}>
                 {results &&
@@ -58,9 +68,33 @@ function Search() {
                         </li>
                     ))
                 }
+            </ul>*/}
 
 
-            </ul>
+            <div className={"row mt-4"}>
+            <div className="justify-content-center float-start container d-flex flex-row flex-wrap">
+                {results &&
+                    results.map((recipe, index) => (
+                        <Link to={`/project/details/${recipe.id}`}>
+                            <div className="float-start card wd-dashboard-card">
+                                <img src={recipe.image}
+                                     className="card-img-top" alt="Recipe Image"/>
+                                <div className={"card-body"}>
+                                    <h5 className={"card-title"}>{recipe.title}</h5>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+            </div>
+            </div>
+
+
+
+
+
+
+
+
 {/*
             <pre>{JSON.stringify(results, null, 2)}</pre>
 */}

@@ -27,7 +27,7 @@ function Home() {
                             <Link to={"/project/search"} className={"btn btn-light btn-outline-dark mt-4"}>Get Started</Link>
                         </div>
                         <div className={"col-6 float-end"}>
-                            <img className={"ms-5 me-5"} height={313} width={395} src={Logo} alt={"Salad Image"}/>
+                            <img className={"ms-5 me-5 rounded"} height={313} width={395} src={Logo} alt={"Salad Image"}/>
                         </div>
 
                     </div>
