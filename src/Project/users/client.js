@@ -48,3 +48,8 @@ export const register = async (credentials) => {
         `${USERS_API}/register`, credentials);
     return response.data;
 };
+
+export const createUser = async (user) => {
+    const response = await request.post(`${USERS_API}`, user);
+    return response.data;
+};

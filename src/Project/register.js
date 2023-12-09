@@ -14,7 +14,7 @@ function Register() {
 
     const signup = async () => {
         try {
-            if( credentials.username !== "" || credentials.password !== "") {
+            if( credentials.username !== "" && credentials.password !== "") {
                 const user = await userClient.register(credentials);
                 dispatch(setCurrentUser(user));
                 navigate(`/project/users/${user._id}`);
@@ -55,7 +55,7 @@ function Register() {
             <div className="row d-flex justify-content-center mb-2 mt-2">
                 <h2>Register for Recipe Finder</h2>
             </div>
-            {error && <div>{error}</div>}
+            {error && <div className={"bg-danger-subtle"}>{"ERROR: "+error}</div>}
 
             <form className="row needs-validation" noValidate>
                 <div className="row d-flex justify-content-center mb-2">
