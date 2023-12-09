@@ -769,11 +769,11 @@ function DetailsPH() {
                     {currentUser && (
                         <>
                             {alreadyLiked() ? (
-                                <button onClick={deleteUserLikesRecipe} className={"btn btn-light btn-outline-dark float-end"}>
+                                <button onClick={deleteUserLikesRecipe} className={"mb-2 btn btn-light btn-outline-dark float-end"}>
                                     Liked
                                 </button>
                             ) : (
-                                <button onClick={currentUserLikesRecipe} className={"btn btn-light btn-outline-dark float-end"}>
+                                <button onClick={currentUserLikesRecipe} className={"mb-2 btn btn-light btn-outline-dark float-end"}>
                                     Like
                                 </button>
                             )}
@@ -786,7 +786,7 @@ function DetailsPH() {
                             </div>
 
                             <div className={"col-6 float-end align-self-center"}>
-                                <img className={"rounded"} height={277.5} width={417} src={Recipe.image} alt={Recipe.name}/>
+                                <img className={"rounded img-fluid"} height={277.5} width={417} src={Recipe.image} alt={Recipe.name}/>
 
                             </div>
                         </div>
@@ -799,18 +799,16 @@ function DetailsPH() {
                             <div className={"col-12"}>
                                 <h4 className={"fw-semibold"}>Nutrition Facts:</h4>
                             </div>
-                            {/*<div className={"row"}>
-                                <div className={"w-75"}>*/}
 
                                 { Recipe.nutrition.nutrients
                                     .filter(nutrient => selectedNutrients.includes(nutrient.name))
                                     .map(({name, amount, unit}) => ({name, amount, unit}))
                                     .map((n, index) => (
-                                        <div className={"col-sm-6 col-md-4 col-lg-3 pj-recipe-nutrition pt-2 pb-2 ps-3 pe-3"}>
+                                        <div className={"col-sm-6 col-md-4 col-lg-3 col-8 pj-recipe-nutrition pt-2 pb-2 ps-3 pe-3"}>
                                             <span>{n.name}</span> <br/> <span>{n.amount}{n.unit}</span>
                                         </div>
                                     ))}
-                                {/*</div>*/}
+
                             </div>
                             <hr/>
                         </div>
@@ -849,14 +847,14 @@ function DetailsPH() {
                          {likes.length === 0 && (
                              <span>No users have liked this recipe yet!</span>
                          )}
-                         <ul className={"list-group ms-5 me-5t"}>
+                         <ul className={"list-group ms-5 me-5"}>
                          {likes?.map((like, index) => (
                              <li className={"list-group-item row"}>
                                  <Link className={"pj-navbar-font"} key={index}  to={`/project/users/${like.user?._id}`}>
-                                     <div className={"col-2 float-start"}>
+                                     <div className={"col-1 float-start me-3"}>
                                          <FaCircleUser fontSize={40} className={"ms-2 me-2"}/>
                                      </div>
-                                     <div className={"col-5 float-start mt-2 mb-2"}>
+                                     <div className={"col-5 float-start mt-2 mb-2 ms-md-2 ms-sm-5 ms-3"}>
                                          {like?.user?.username}
                                      </div>
                                  </Link>

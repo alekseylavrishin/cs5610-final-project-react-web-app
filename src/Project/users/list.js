@@ -1,11 +1,21 @@
 import * as client from "./client";
 import {useEffect, useState} from "react";
 import {Link, Navigate} from "react-router-dom";
+import {BsTrash3Fill} from "react-icons/bs";
 
 function UserList() {
     const [users, setUsers] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
 
+
+    const deleteUser = async (user) => {
+        try {
+            await client.deleteUser(user);
+            setUsers(users.filter((u) => u._id !== user._id));
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const fetchUser = async () => {
         const user = await client.account();
@@ -47,7 +57,7 @@ function UserList() {
         </div>*/
 
 
-        <div className={"col-11"}>
+        <div className={"col-12 ms-3 me-3 mt-4 mb-3"}>
             {currentUser && currentUser.role === "ADMIN" && (
             <>
                 <h2>Admin Panel</h2>
@@ -59,6 +69,7 @@ function UserList() {
                             <th>Last Name</th>
                             <th>Email</th>
                             <th>Role</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,6 +114,12 @@ function UserList() {
                                     className={"list-group-item"}>
                                     {user.role}
                                 </Link>
+                            </td>
+                            <td>
+                                <button className="btn btn-danger me-2"
+                                        onClick={() => deleteUser(user)}>
+                                    <BsTrash3Fill />
+                                </button>
                             </td>
                         </tr>))}
                     </tbody>
