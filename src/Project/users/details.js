@@ -31,15 +31,14 @@ function UserDetails() {
 
     const updateUser = async () => {
         const status = await client.updateUser(id, user);
-        //setUser(updatedUser);
         fetchUser();
 
     };
 
-    const deleteUser = async (id) => {
+    /*const deleteUser = async (id) => {
         const status = await client.deleteUser(id);
         navigate("/project/home");
-    }
+    }*/
 
     const unFollowUser = async () => {
         const status = await followsClient.userUnfollowsUser(id);
@@ -146,10 +145,12 @@ function UserDetails() {
                                         <li key={index} className={"list-group-item"}>
                                             <Link to={`/project/details/${like.recipeId}`}>
                                                 <div className={"float-start col-3"}>
-                                                    <img className={"rounded"}
+                                                    <img
+                                                        className={"rounded"}
+                                                        alt={"recipe image"}
                                                         width={208}
-                                                         height={138.75}
-                                                         src={like.recipeImage}/>
+                                                        height={138.75}
+                                                        src={like.recipeImage}/>
                                                 </div>
                                                 <div className={"float-lg-start float-md-end float-sm-end float-xs-end col-6 ps-4 ms-4"}>
                                                 <span>{like.recipeName}</span>

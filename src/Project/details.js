@@ -1,10 +1,8 @@
 import {Link, useParams} from "react-router-dom";
 import {useState, useEffect} from "react";
 import * as client from "./client";
-import * as userClient from "./users/client";
 import * as likesClient from "./likes/client";
 import {useSelector} from "react-redux";
-import {deleteUserLikesRecipe} from "./likes/client";
 import {FaCircleUser} from "react-icons/fa6";
 
 function Details() {
@@ -127,8 +125,6 @@ function Details() {
                                 </li>
                             ))}
                         </ul>
-                        {/*<h3>Recipe Overview:</h3>
-                    <p>{Recipe.instructions}</p>*/}
                         <h4 className={"fw-semibold mb-2 mt-3"}>Preparation Instructions:</h4>
                         <ol className={"list-group-numbered"}>
                             {recipe.analyzedInstructions[0].steps.map((step, index) => (

@@ -829,8 +829,6 @@ function DetailsPH() {
                             </li>
                         ))}
                     </ul>
-                    {/*<h3>Recipe Overview:</h3>
-                    <p>{Recipe.instructions}</p>*/}
                     <h4 className={"fw-semibold mb-2 mt-3"}>Preparation Instructions:</h4>
                     <ol className={"list-group-numbered"}>
                         {Recipe.analyzedInstructions[0].steps.map((step, index) => (

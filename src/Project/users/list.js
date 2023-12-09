@@ -1,9 +1,8 @@
 import * as client from "./client";
 import {useEffect, useState} from "react";
 import {Link, Navigate} from "react-router-dom";
-import {BsFillCheckCircleFill, BsPencil, BsPlusCircleFill, BsTrash3Fill} from "react-icons/bs";
-import * as userClient from "./client";
-import {setCurrentUser} from "./reducer";
+import {BsPencil, BsTrash3Fill} from "react-icons/bs";
+
 
 function UserList() {
     const [users, setUsers] = useState([]);
@@ -11,12 +10,20 @@ function UserList() {
         email: "", role: "USER" });
     const [currentUser, setCurrentUser] = useState(null);
     const [error, setError] = useState("");
+    const [edit, setEdit] = useState(false);
 
-
+    // disregard spaces in username, password, email fields
+    const handleKeyDown = event => {
+        if (event.keyCode === 32) {
+            event.preventDefault();
+        }
+    };
 
     const clearSelectedUser = () => {
         setUser({username: "", password: "", firstName: "",
             lastName: "", email: "", role: "USER"});
+        setEdit(false);
+        setError("");
     };
 
     const deleteUser = async (User) => {
@@ -26,6 +33,7 @@ function UserList() {
                 clearSelectedUser();
             }
             setUsers(users.filter((u) => u._id !== User._id));
+            setError("");
         } catch (err) {
             console.log(err);
         }
@@ -36,6 +44,7 @@ function UserList() {
             if (user.username !== "" && user.password !== ""){
                 const newUser = await client.createUser(user);
                 setUsers([newUser, ...users]);
+                setError("");
             } else {
                 setError("Username and password fields cannot be empty")
             }
@@ -47,8 +56,10 @@ function UserList() {
 
     const updateUser = async () => {
         try {
-            const status = await client.updateUser(user);
+            const status = await client.updateUser(user._id, user);
             setUsers(users.map((u) => (u._id === user._id ? user : u)));
+            clearSelectedUser();
+            setError("");
         } catch (err) {
             console.log(err);
         }
@@ -57,7 +68,10 @@ function UserList() {
     const selectUser = async (user) => {
         try {
             const u = await client.findUserById(user._id);
+            clearSelectedUser();
             setUser(u);
+            setEdit(true);
+            setError("");
         } catch (err) {
             console.log(err);
         }
@@ -84,24 +98,25 @@ function UserList() {
             {currentUser && currentUser.role === "ADMIN" && (
             <>
                 <h2>Admin Panel</h2>
+                <h6>Selected User: {user.username}</h6>
                 {error && <div className={"bg-danger-subtle"}>{"ERROR: "+error}</div>}
                 <table className={"table"}>
                     <thead>
                     <tr>
                         <td>
-                            <input placeholder={"username"} className={"form-control"} value={user.username} onChange={(e) => setUser({ ...user, username: e.target.value })}/>
+                            <input onKeyDown={handleKeyDown} placeholder={"username"} className={"form-control"} value={user.username} onChange={(e) => setUser({ ...user, username: e.target.value })}/>
                         </td>
                         <td>
-                            <input placeholder={"password"} className={"form-control"} value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })}/>
+                            <input onKeyDown={handleKeyDown} placeholder={"password"} className={"form-control"} value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })}/>
                         </td>
                         <td>
-                            <input placeholder={"First Name"} className={"form-control"} value={user.firstName} onChange={(e) => setUser({ ...user, firstName: e.target.value })}/>
+                            <input onKeyDown={handleKeyDown} placeholder={"First Name"} className={"form-control"} value={user.firstName} onChange={(e) => setUser({ ...user, firstName: e.target.value })}/>
                         </td>
                         <td>
-                            <input placeholder={"Last Name"} className={"form-control"} value={user.lastName} onChange={(e) => setUser({ ...user, lastName: e.target.value })}/>
+                            <input onKeyDown={handleKeyDown} placeholder={"Last Name"} className={"form-control"} value={user.lastName} onChange={(e) => setUser({ ...user, lastName: e.target.value })}/>
                         </td>
                         <td>
-                            <input placeholder={"Email"} className={"form-control"} value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })}/>
+                            <input onKeyDown={handleKeyDown} placeholder={"Email"} className={"form-control"} value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })}/>
                         </td>
                         <td>
                             <select className={"form-control"} value={user.role} onChange={(e) => setUser({ ...user, role: e.target.value })}>
@@ -116,8 +131,32 @@ function UserList() {
                             <button className={"btn btn-outline-dark"} onClick={clearSelectedUser}>Clear Selected</button>
                         </td>
                         <td>
-                            <button className={"btn btn-outline-success"} onClick={clearSelectedUser}>Update User</button>
+                            {edit && (
+                                <button className={"btn btn-outline-primary"} onClick={updateUser}>
+                                    Update User
+                                </button>
+                            )}
+                            {!edit && (
+                                <button disabled className={"btn btn-outline-primary"} onClick={updateUser}>
+                                    Update User
+                                </button>
+                            )}
                         </td>
+                        <td>
+                            {edit && (
+                                <button disabled className={"btn btn-outline-success"} onClick={createUser}>
+                                    Create User
+                                </button>
+                            )}
+                            {!edit && (
+                                <button className={"btn btn-outline-success"} onClick={createUser}>
+                                    Create User
+                                </button>
+                            )}
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <th>Username</th>
@@ -130,17 +169,6 @@ function UserList() {
 
                     </thead>
                     <tbody>
-
-
-                        <td>
-{/*
-                            <button className={"btn btn-outline-dark"} onClick={clearSelectedUser}>Clear</button>
-*/}
-            {/*
-                            <BsFillCheckCircleFill onClick={updateUser} type={"button"} className="me-2 text-success fs-1 text" />
-                            <BsPlusCircleFill className={"text-primary fs-1"} type={"button"} onClick={createUser}/>
-                            */}
-                        </td>
                     {users.map((user) => (
                         <tr key={user._id}>
                             <td>
