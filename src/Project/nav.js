@@ -41,11 +41,11 @@ function Navigation() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-3 me-auto">
 
-                        <Nav.Link className={"me-lg-4"}>
+                        {/*<Nav.Link className={"me-lg-4"}>
                             <Link to={"/project/detailsPH"} className={"list-group-item"}>
                                 <span className={"pj-navbar-font"}>Details Placeholder</span>
                             </Link>
-                        </Nav.Link>
+                        </Nav.Link>*/}
 
                         <Nav.Link className={"me-lg-4"}>
                             <Link to={"/project/home"} className={"list-group-item"}>

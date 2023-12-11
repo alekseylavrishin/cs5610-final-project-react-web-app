@@ -21,8 +21,12 @@ function Home() {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const fetchAllFeatures = async () => {
-        const features = await featuresClient.findAllFeatures();
-        setAllFeatures(features);
+        try {
+            const features = await featuresClient.findAllFeatures();
+            setAllFeatures(features);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     useEffect(() => {
@@ -56,6 +60,8 @@ function Home() {
                 </div>
 
 
+                {allFeatures && (
+                    <>
                 <div className={"row mt-5 "}>
                     <div className={"col-lg-5 col-md-5 col-sm-6 text-center mt-5"}>
                         <div className={"float-start"}>
@@ -83,6 +89,8 @@ function Home() {
                         </Link>
                     ))}
                 </div>
+                    </>
+                    )}
             </div>
 
         </div>
