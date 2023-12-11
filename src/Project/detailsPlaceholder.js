@@ -2,6 +2,7 @@ import {Link, useParams} from "react-router-dom";
 import {useState, useEffect} from "react";
 import * as client from "./client";
 import * as likesClient from "./likes/client";
+import * as featuresClient from "./features/client";
 import {useSelector} from "react-redux";
 import "./home.css";
 import {FaCircleUser} from "react-icons/fa6";
@@ -15,9 +16,10 @@ function DetailsPH() {
     const [recipe, setRecipe] = useState(null);
     const [likes, setLikes] = useState([]);
     const [error, setError] = useState("");
+    const [feature, setFeature] = useState(null);
 
 
-    const fetchRecipe = async () => {
+    /*const fetchRecipe = async () => {
         try {
             const recipe = await client.getRecipeInfo(631894);
             setRecipe(recipe);
@@ -25,7 +27,7 @@ function DetailsPH() {
         catch(error){
             setError(error.response.data.message)
         }
-    };
+    };*/
 
     const fetchLikes = async () => {
         const likes = await likesClient.findUsersThatLikeRecipe(631894);
@@ -35,21 +37,67 @@ function DetailsPH() {
     const selectedNutrients = ["Calories", "Fat", "Carbohydrates", "Protein"];
 
     const currentUserLikesRecipe = async () => {
-        const _likes = likesClient.createUserLikesRecipe(currentUser._id, 631894, Recipe.title, Recipe.image);
-        setLikes([_likes, ...likes]);
+        const _likes = await likesClient.createUserLikesRecipe(currentUser._id, 631894, Recipe.title, Recipe.image);
+
+        //setLikes([_likes, ...likes]);
+        //setLikes([userPlaceholder, ...likes]);
+        console.log(likes);
         fetchLikes();
+
     };
 
     const deleteUserLikesRecipe = async () => {
-        const status = await likesClient.deleteUserLikesRecipe(currentUser._id, 631894);
-        fetchLikes();
+        try {
+            const status = await likesClient.deleteUserLikesRecipe(currentUser._id, 631894);
+            // removes liked recipe locally
+            let otherUsers = likes.filter(like => like.user._id !== currentUser._id);
+            setLikes(otherUsers);
+            console.log(otherUsers);
+        }
+        catch (error) {
+            console.log(error.response.data);
+        }
     };
 
     const alreadyLiked = () => {
+        //fetchLikes();
         return likes.some((like) => {
             return like.user?._id === currentUser._id;
         })
+    };
+
+    const fetchFeature = async () => {
+        try {
+            const f = await featuresClient.checkIfRecipeFeatured(631894);
+            setFeature(f);
+        }
+        catch (error){
+            console.log(error.response.data);
+        }
+    };
+
+    const createFeature = async () => {
+        try {
+            const status = await featuresClient.createInfluencerFeaturesRecipe(currentUser._id, 631894, Recipe.title, Recipe.image)
+            //fetchFeature();
+            setFeature(status);
+        }
+        catch (error) {
+            console.log(error.response.data);
+        }
     }
+
+    const deleteFeature = async () => {
+        try {
+            const status = await featuresClient.deleteInfluencerFeaturesRecipe(currentUser._id, 631894);
+            //fetchFeature();
+            setFeature(null);
+        }
+        catch (error) {
+            console.log(error.response.data);
+        }
+    }
+
     const Recipe = {
         summary: "A Fish That's Not Really A Fish is a <b>pescatarian</b> recipe with 6 servings. For <b>$2.54 per serving</b>, this recipe <b>covers 33%</b> of your daily requirements of vitamins and minerals. One portion of this dish contains roughly <b>41g of protein</b>, <b>38g of fat</b>, and a total of <b>850 calories</b>. It is brought to you by Foodista. A mixture of shallots, capers, little' patience and creativity, and a handful of other ingredients are all it takes to make this recipe so yummy. It works well as a main course. 1 person were glad they tried this recipe. From preparation to the plate, this recipe takes about <b>45 minutes</b>. With a spoonacular <b>score of 70%</b>, this dish is good. <a href=\"https://spoonacular.com/recipes/easy-fish-molee-south-indian-style-fish-stew-with-coconut-1632337\">Easy Fish Molee (South Indian-Style Fish Stew With Coconut)</a>, <a href=\"https://spoonacular.com/recipes/easy-fish-molee-south-indian-style-fish-stew-with-coconut-641970\">Easy Fish Molee (South Indian-Style Fish Stew With Coconut)</a>, and <a href=\"https://spoonacular.com/recipes/turbot-fish-in-tomato-sauce-breaded-fish-1434\">Turbot Fish in Tomato Sauce (Breaded Fish )</a> are very similar to this recipe.",
         title: "A Fish That's Not Really A Fish",
@@ -754,9 +802,11 @@ function DetailsPH() {
 
 
     useEffect(() => {
-        fetchRecipe();
+        //fetchRecipe();
         //fetchUser();
         fetchLikes();
+        fetchFeature();
+       /* alreadyLiked();*/
     }, []);
 
     return(
@@ -779,7 +829,18 @@ function DetailsPH() {
                             )}
                         </>
                     )}
-                    <div>
+                    {currentUser && currentUser.role === "INFLUENCER" && feature === null && (
+                        <button onClick={createFeature} className={"btn btn-outline-primary mb-2"}>
+                            Feature
+                        </button>
+                    )}
+                    {currentUser && currentUser.role === "INFLUENCER" && feature !== null && (
+                        <button onClick={deleteFeature} className={"btn btn-outline-warning"}>
+                            Featured
+                        </button>
+                        )}
+
+                        <div>
                         <div className={"col-12 d-flex"}>
                             <div className={"col-6 float-start align-self-center ps-1 pe-1"}>
                                 <h1 className={"text-capitalize"}>{Recipe.title}</h1>

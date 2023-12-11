@@ -4,6 +4,7 @@ import * as client from "./client";
 import * as likesClient from "./likes/client";
 import {useSelector} from "react-redux";
 import {FaCircleUser} from "react-icons/fa6";
+import * as featuresClient from "./features/client";
 
 function Details() {
     const {currentUser} = useSelector((state) => state.userReducer);
@@ -12,6 +13,8 @@ function Details() {
     const [recipe, setRecipe] = useState(null);
     const [likes, setLikes] = useState([]);
     const [error, setError] = useState("");
+    const [feature, setFeature] = useState(null);
+
 
 
     const fetchRecipe = async () => {
@@ -33,13 +36,26 @@ function Details() {
 
     const currentUserLikesRecipe = async () => {
         const _likes = likesClient.createUserLikesRecipe(currentUser._id, recipeId, recipe.title, recipe.image);
-        setLikes([_likes, ...likes]);
+        /*setLikes([_likes, ...likes]);
+        await fetchLikes();
+        alreadyLiked();*/
         fetchLikes();
     };
 
     const deleteUserLikesRecipe = async () => {
-        const status = await likesClient.deleteUserLikesRecipe(currentUser._id, recipeId);
-        fetchLikes();
+        /*const status = await likesClient.deleteUserLikesRecipe(currentUser._id, recipeId);
+        await fetchLikes();
+        alreadyLiked();*/
+        try {
+            const status = await likesClient.deleteUserLikesRecipe(currentUser._id, recipeId);
+            // removes liked recipe locally
+            let otherUsers = likes.filter(like => like.user._id !== currentUser._id);
+            setLikes(otherUsers);
+            console.log(otherUsers);
+        }
+        catch (error) {
+            console.log(error.response.data);
+        }
     };
 
     const alreadyLiked = () => {
@@ -48,11 +64,44 @@ function Details() {
         })
     }
 
+    const fetchFeature = async () => {
+        try {
+            const f = await featuresClient.checkIfRecipeFeatured(recipeId);
+            setFeature(f);
+        }
+        catch (error){
+            console.log(error.response.data);
+        }
+    };
+
+    const createFeature = async () => {
+        try {
+            const status = await featuresClient.createInfluencerFeaturesRecipe(currentUser._id, recipeId, recipe.title, recipe.image)
+            //fetchFeature();
+            setFeature(status);
+        }
+        catch (error) {
+            console.log(error.response.data);
+        }
+    };
+
+    const deleteFeature = async () => {
+        try {
+            const status = await featuresClient.deleteInfluencerFeaturesRecipe(currentUser._id, recipeId);
+            //fetchFeature();
+            setFeature(null);
+        }
+        catch (error) {
+            console.log(error.response.data);
+        }
+    };
+
 
     useEffect(() => {
         fetchRecipe();
         //fetchUser();
         fetchLikes();
+        fetchFeature();
     }, []);
 
     return(
@@ -74,6 +123,16 @@ function Details() {
                                 </button>
                             )}
                         </>
+                    )}
+                    {currentUser && currentUser.role === "INFLUENCER" && feature === null && (
+                        <button onClick={createFeature} className={"btn btn-outline-primary mb-2"}>
+                            Feature
+                        </button>
+                    )}
+                    {currentUser && currentUser.role === "INFLUENCER" && feature !== null && (
+                        <button onClick={deleteFeature} className={"btn btn-outline-warning"}>
+                            Featured
+                        </button>
                     )}
                     <div>
                         <div className={"col-12 d-flex"}>

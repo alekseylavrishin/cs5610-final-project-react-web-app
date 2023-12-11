@@ -13,6 +13,7 @@ import Tabs from 'react-bootstrap/Tabs';
 function UserDetails() {
     const [user, setUser] = useState(null);
     const [likes, setLikes] = useState([]);
+    const [features, setFeatures] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
     const {currentUser} = useSelector((state) => state.userReducer);
@@ -111,6 +112,14 @@ function UserDetails() {
                                 {following.length}
                             </div>
                         </li>
+                        <li className={"list-group-item"}>
+                            <div className={"w-50 float-start"}>
+                                Features:
+                            </div>
+                            <div className={"w-50 float-end text-end"}>
+                                {features.length}
+                            </div>
+                        </li>
                     </ul>
                 </div>
 
@@ -154,6 +163,28 @@ function UserDetails() {
                                                 </div>
                                                 <div className={"float-lg-start float-md-end float-sm-end float-xs-end col-6 ps-4 ms-4"}>
                                                 <span>{like.recipeName}</span>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </Tab>
+                            <Tab eventKey="Features" title="Featured Recipes" >
+                                {features.length === 0 && (<p>{user.username} has not featured any recipes yet</p>)}
+                                <ul className={"list-group"}>
+                                    {features.map((feature, index) => (
+                                        <li key={index} className={"list-group-item"}>
+                                            <Link to={`/project/details/${feature.recipeId}`}>
+                                                <div className={"float-start col-3"}>
+                                                    <img
+                                                        className={"rounded"}
+                                                        alt={"recipe image"}
+                                                        width={208}
+                                                        height={138.75}
+                                                        src={feature.recipeImage}/>
+                                                </div>
+                                                <div className={"float-lg-start float-md-end float-sm-end float-xs-end col-6 ps-4 ms-4"}>
+                                                    <span>{feature.recipeName}</span>
                                                 </div>
 
                                             </Link>
