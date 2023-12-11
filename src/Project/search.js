@@ -55,45 +55,22 @@ function Search() {
                     </div>
                 </div>
             </div>
-           {/* <h2>Results</h2>
-            {error && <div className={"bg-danger-subtle text-center"}>{error}</div>}
-            <ul className={"list-group"}>
-                {results &&
-                    results.map((recipe, index) => (
-                        <li key={index} className={"list-group-item"}>
-                            <Link to={`/project/details/${recipe.id}`}>
-                                <h3>{recipe.title}</h3>
-                                <img src={recipe.image} alt={recipe.name}/>
-                            </Link>
-                        </li>
-                    ))
-                }
-            </ul>*/}
-
-
             <div className={"row mt-4"}>
-            <div className="justify-content-center float-start container d-flex flex-row flex-wrap">
-                {results &&
-                    results.map((recipe, index) => (
-                        <Link to={`/project/details/${recipe.id}`}>
-                            <div className="float-start card wd-dashboard-card">
-                                <img src={recipe.image}
-                                     className="card-img-top" alt="Recipe Image"/>
-                                <div className={"card-body"}>
-                                    <h5 className={"card-title"}>{recipe.title}</h5>
+                <div className="justify-content-center float-start container d-flex flex-row flex-wrap">
+                    {results &&
+                        results.map((recipe, index) => (
+                            <Link to={`/project/details/${recipe.id}`}>
+                                <div className="float-start card wd-dashboard-card">
+                                    <img src={recipe.image}
+                                         className="card-img-top" alt="Recipe Image"/>
+                                    <div className={"card-body"}>
+                                        <h5 className={"card-title"}>{recipe.title}</h5>
+                                    </div>
                                 </div>
-                            </div>
-                        </Link>
-                    ))}
+                            </Link>
+                        ))}
+                </div>
             </div>
-            </div>
-
-
-
-
-
-
-
 
 {/*
             <pre>{JSON.stringify(results, null, 2)}</pre>

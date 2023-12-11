@@ -15,65 +15,9 @@ function Home() {
     const cardsPerPage = 4;
     const [allFeatures, setAllFeatures] = useState([]);
 
-    // Sample data for cards (replace with your actual data)
-    const cardData = [
-        // Card 1
-        {
-            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
-            title: 'Card Title 1',
-            text: 'Card Text 1',
-        },
-        // Card 2
-        {
-            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
-            title: 'Card Title 2',
-            text: 'Card Text 2',
-        },
-        // Card 3
-        {
-            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
-            title: 'Card Title 3',
-            text: 'Card Text 3',
-        },
-        // Card 4
-        {
-            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
-            title: 'Card Title 4',
-            text: 'Card Text 4',
-        },
-        // Add more cards as needed
-        {
-            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
-            title: 'Card Title 4',
-            text: 'Card Text 4',
-        },
-        {
-            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
-            title: 'Card Title 4',
-            text: 'Card Text 4',
-        },
-        {
-            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
-            title: 'Card Title 4',
-            text: 'Card Text 4',
-        },
-        {
-            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
-            title: 'Card Title 4',
-            text: 'Card Text 4',
-        },
-        {
-            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
-            title: 'Card Title 4',
-            text: 'Card Text 4',
-        },
-    ];
-
     const indexOfLastCard = currentPage * cardsPerPage;
     const indexOfFirstCard = indexOfLastCard - cardsPerPage;
     const currentCards = allFeatures.slice(indexOfFirstCard, indexOfLastCard);
-
-    // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const fetchAllFeatures = async () => {
