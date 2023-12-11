@@ -14,7 +14,10 @@
     margin-right: 30px;
     margin-bottom: 30px;
     padding: 5px;
-    box-shadow: 0 2px 4px grey;
+    /*
+    box-shadow: 0 1px 1px black;
+    */
+    outline: 2px black;
 
 }
 .wd-dashboard-card-img {
@@ -61,10 +64,6 @@
     background-color: #f5f6ea;
 }
 
-/*.pj-recipe-li {
-    color: #e7ab46;
-
-}*/
 li {
     color: #e7ab46;
 }

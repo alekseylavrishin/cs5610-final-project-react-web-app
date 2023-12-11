@@ -3,9 +3,87 @@ import "../home-img.jpg";
 import Logo from "../home-img.jpg";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
+import {Pagination} from "react-bootstrap";
+import {useEffect, useState} from "react";
+import * as featuresClient from "./features/client";
+
 
 function Home() {
     const {currentUser} = useSelector((state) => state.userReducer);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const cardsPerPage = 4;
+    const [allFeatures, setAllFeatures] = useState([]);
+
+    // Sample data for cards (replace with your actual data)
+    const cardData = [
+        // Card 1
+        {
+            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
+            title: 'Card Title 1',
+            text: 'Card Text 1',
+        },
+        // Card 2
+        {
+            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
+            title: 'Card Title 2',
+            text: 'Card Text 2',
+        },
+        // Card 3
+        {
+            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
+            title: 'Card Title 3',
+            text: 'Card Text 3',
+        },
+        // Card 4
+        {
+            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
+            title: 'Card Title 4',
+            text: 'Card Text 4',
+        },
+        // Add more cards as needed
+        {
+            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
+            title: 'Card Title 4',
+            text: 'Card Text 4',
+        },
+        {
+            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
+            title: 'Card Title 4',
+            text: 'Card Text 4',
+        },
+        {
+            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
+            title: 'Card Title 4',
+            text: 'Card Text 4',
+        },
+        {
+            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
+            title: 'Card Title 4',
+            text: 'Card Text 4',
+        },
+        {
+            image: 'https://spoonacular.com/recipeImages/654928-556x370.jpg',
+            title: 'Card Title 4',
+            text: 'Card Text 4',
+        },
+    ];
+
+    const indexOfLastCard = currentPage * cardsPerPage;
+    const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+    const currentCards = allFeatures.slice(indexOfFirstCard, indexOfLastCard);
+
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const fetchAllFeatures = async () => {
+        const features = await featuresClient.findAllFeatures();
+        setAllFeatures(features);
+    }
+
+    useEffect(() => {
+        fetchAllFeatures();
+    }, []);
 
     return(
         <div>
@@ -26,8 +104,8 @@ function Home() {
                             <h5>Elevate your culinary experience by discovering new and delicious recipes</h5>
                             <Link to={"/project/search"} className={"btn btn-light btn-outline-dark mt-4"}>Get Started</Link>
                         </div>
-                        <div className={"col-6 float-end"}>
-                            <img className={"ms-5 me-5 rounded"} height={313} width={395} src={Logo} alt={"Salad Image"}/>
+                        <div className={"col-6 float-end align-self-center"}>
+                            <img className={"img-fluid ms-5 me-5 rounded"} height={313} width={395} src={Logo} alt={"Salad Image"}/>
                         </div>
 
                     </div>
@@ -35,90 +113,35 @@ function Home() {
 
 
                 <div className={"row mt-5 "}>
-                    <div className={"col-lg-4 col-md-5 col-sm-6 text-center mt-5"}>
-                        <h2 className={"ms-5 mt-4"}>Featured Recipes</h2>
+                    <div className={"col-lg-5 col-md-5 col-sm-6 text-center mt-5"}>
+                        <div className={"float-start"}>
+                        <h3 className={"ms-5 mt-3 mb-3"}>Featured Recipes ({allFeatures.length})</h3>
+                        </div>
+                        <div className={"float-start "}>
+                            <Pagination className="mt-3 mt-lg-3 mt-md-1 mt-sm-1 ms-sm-5 ms-md-4 ms-2 me-2 float-start mb-3">
+                                <Pagination.Prev className={"ms-2 me-2"} onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}/>
+                                <Pagination.Next onClick={() => paginate(currentPage + 1)} disabled={currentPage === Math.ceil(allFeatures.length / cardsPerPage)}/>
+                            </Pagination>
+                        </div>
+
                     </div>
                 </div>
-                    <div className="justify-content-center float-start container d-flex flex-row flex-wrap">
-
-                        <div className="card wd-dashboard-card">
-                            <img src="https://spoonacular.com/recipeImages/654928-556x370.jpg"
-                                 className="card-img-top" alt="..."/>
-                            <div className={"card-body"}>
-                                <h5 className={"card-title"}>Card Title</h5>
-                                <p className={"card-text"}>Card Text</p>
+                <div className="justify-content-center float-start container d-flex flex-row flex-wrap">
+                    {currentCards.map((card, index) => (
+                        <Link to={`/project/details/${card.recipeId}`}>
+                        <div key={index} className="card wd-dashboard-card">
+                            <img src={card.recipeImage} className="card-img-top" alt="..." />
+                            <div className="card-body">
+                                <h5 className="card-title">{card.recipeName}</h5>
+                               {/* <p className="card-text">{card.text}</p>*/}
                             </div>
                         </div>
-                        <div className="card wd-dashboard-card">
-                            <img src="https://spoonacular.com/recipeImages/654928-556x370.jpg"
-                                 className="card-img-top" alt="..."/>
-                            <div className={"card-body"}>
-                                <h5 className={"card-title"}>Card Title</h5>
-                                <p className={"card-text"}>Card Text</p>
-                            </div>
-                        </div>
-                        <div className="card wd-dashboard-card">
-                            <img src="https://spoonacular.com/recipeImages/654928-556x370.jpg"
-                                 className="card-img-top" alt="..."/>
-                            <div className={"card-body"}>
-                                <h5 className={"card-title"}>Card Title</h5>
-                                <p className={"card-text"}>Card Text</p>
-                            </div>
-                        </div>
-                        <div className="card wd-dashboard-card">
-                            <img src="https://spoonacular.com/recipeImages/654928-556x370.jpg"
-                                 className="card-img-top" alt="..."/>
-                            <div className={"card-body"}>
-                                <h5 className={"card-title"}>Card Title</h5>
-                                <p className={"card-text"}>Card Text</p>
-                            </div>
-                        </div>
-
-                    </div>
+                        </Link>
+                    ))}
+                </div>
             </div>
 
         </div>
     );
 }
 export default Home;
-
-{/*{courses.map((course) => (
-                        <div className="card wd-dashboard-card">
-                            <Link key={course._id} to={`/Kanbas/Courses/${course._id}`} className="list-group-item wd-dashboard-card-a">
-                                <div className="wd-dashboard-card-img card-img-top"></div>
-                                <button className={"btn btn-outline-warning btn-sm me-2 mb-1 mt-1"}
-                                        onClick={(event) => {
-                                            event.preventDefault();
-                                            setCourse(course);
-                                        }}>
-                                    Edit
-                                </button>
-
-                                <button className={"btn btn-outline-danger btn-sm mb-1 mt-1"}
-                                        onClick={(event) => {
-                                            event.preventDefault();
-                                            deleteCourse(course._id);
-                                        }}>
-                                    Delete
-                                </button>
-                                <h5 className={"card-title ps-1"}>{course.name}</h5>
-                                <h6 className="card-subtitle wd-dashboard-card-a ps-1">{course.number}</h6>
-                                <p className="card-text wd-dashboard-card-body-p ps-1">{course.fullId}
-                                </p>
-                            </Link>
-                        </div>
-                    ))}*/}
-{/*<div className="card wd-dashboard-card">
-                        <div className="wd-dashboard-card-img card-img-top">
-                        </div>
-                        <button className={"btn btn-outline-warning btn-sm me-2 mb-1 mt-1"}>
-                            Edit
-                        </button>
-
-                        <button className={"btn btn-outline-danger btn-sm mb-1 mt-1"}>
-                            Delete
-                        </button>
-                        <h5 className={"card-title ps-1"}>Placeholder</h5>
-                        <h6 className="card-subtitle wd-dashboard-card-a ps-1">Placeholder</h6>
-                        <p className="card-text wd-dashboard-card-body-p ps-1">Placeholder</p>
-                    </div>*/}
