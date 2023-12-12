@@ -234,14 +234,45 @@ function UserDetails() {
                                             <Link to={`/project/details/${feature.recipeId}`}>
                                                 <div className={"float-start col-3"}>
                                                     <img
-                                                        className={"rounded"}
+                                                        className={"rounded img-fluid"}
                                                         alt={"recipe image"}
                                                         width={208}
                                                         height={138.75}
                                                         src={feature.recipeImage}/>
                                                 </div>
+{/*
                                                 <div className={"float-lg-start float-md-end float-sm-end float-xs-end col-6 ps-4 ms-4"}>
+*/}
+                                                <div className={"row col-9 float-end"}>
+                                                    <div className={"float-lg-start float-md-end float-sm-end float-xs-end col-5 ms-4"}>
                                                     <span>{feature.recipeName}</span>
+                                                    </div>
+                                                <div className={" col-sm-5 col-5 col-md-6 col-lg-6 float-end"}>
+                                                    <div>
+                                                            <span>
+                                                                Calories: {nutrition.find((nutrient) =>
+                                                                nutrient.recipeId === feature.recipeId)?.calories}kcal
+                                                            </span>
+                                                    </div>
+                                                    <div>
+                                                            <span>
+                                                                Fat: {nutrition.find((nutrient) =>
+                                                                nutrient.recipeId === feature.recipeId)?.fat}g
+                                                            </span>
+                                                    </div>
+                                                    <div>
+                                                            <span>
+                                                                Carbs: {nutrition.find((nutrient) =>
+                                                                nutrient.recipeId === feature.recipeId)?.carbohydrates}g
+                                                            </span>
+                                                    </div>
+                                                    <div>
+                                                            <span>
+                                                                Protein: {nutrition.find((nutrient) =>
+                                                                nutrient.recipeId === feature.recipeId)?.protein}g
+                                                            </span>
+                                                    </div>
+                                                </div>
                                                 </div>
 
                                             </Link>
