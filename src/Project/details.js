@@ -5,6 +5,7 @@ import * as likesClient from "./likes/client";
 import {useSelector} from "react-redux";
 import {FaCircleUser} from "react-icons/fa6";
 import * as featuresClient from "./features/client";
+import * as nutritionClient from "./nutrition/client";
 
 function Details() {
     const {currentUser} = useSelector((state) => state.userReducer);
@@ -15,27 +16,69 @@ function Details() {
     const [error, setError] = useState("");
     const [feature, setFeature] = useState(null);
 
-
+    const [calories, setCalories] = useState(null);
+    const [fat, setFat] = useState(null);
+    const [carbohydrates, setCarbs] = useState(null);
+    const [protein, setProtein] = useState(null);
+    const selectedNutrients = ["Calories", "Fat", "Carbohydrates", "Protein"];
+    const [nutrients, setNutrients] = useState({Calories: "", Fat: "", Carbohydrates: "", Protein: ""});
 
     const fetchRecipe = async () => {
         try {
             const recipe = await client.getRecipeInfo(recipeId);
             setRecipe(recipe);
+
         }
         catch(error){
-            setError(error.response.data.message)
         }
     };
+
+    /*const setnutrients = () => {
+        setCalories(recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Calories'));
+        setFat(recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Fat'));
+        setCarbs(recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Carbohydrates'));
+        setProtein(recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Protein'));
+
+        setNutrients({
+            Calories: `${calories.amount} ${calories.unit}`,
+            Fat: `${fat.amount} ${fat.unit}`,
+            Carbohydrates: `${carbohydrates.amount} ${carbohydrates.unit}`,
+            Protein: `${protein.amount} ${protein.unit}`
+        });
+    }*/
+
 
     const fetchLikes = async () => {
         const likes = await likesClient.findUsersThatLikeRecipe(recipeId);
         setLikes(likes);
     }
 
-    const selectedNutrients = ["Calories", "Fat", "Carbohydrates", "Protein"];
-
     const currentUserLikesRecipe = async () => {
         const _likes = await likesClient.createUserLikesRecipe(currentUser._id, recipeId, recipe.title, recipe.image);
+
+
+        const cals = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Calories');
+        const fat = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Fat');
+        const carbs = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Carbohydrates');
+        const protein = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Protein');
+
+        /*setNutrients({
+            Calories: `${calories.amount} ${calories.unit}`,
+            Fat: `${fat.amount} ${fat.unit}`,
+            Carbohydrates: `${carbohydrates.amount} ${carbohydrates.unit}`,
+            Protein: `${protein.amount} ${protein.unit}`
+        });*/
+
+        /*const nutrition = await nutritionClient.createNutritionInfo(recipeId, recipe.title,
+            nutrients.Carbohydrates, nutrients.Fat, nutrients.Calories, nutrients.Protein);*/
+        const nutrition = await nutritionClient.createNutritionInfo(recipeId, recipe.title,
+            recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Carbohydrates').amount,
+            recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Fat').amount,
+            recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Calories').amount,
+            recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Protein').amount);
+
+
+
         /*setLikes([_likes, ...likes]);
         await fetchLikes();
         alreadyLiked();*/
@@ -52,6 +95,9 @@ function Details() {
             let otherUsers = likes.filter(like => like.user._id !== currentUser._id);
             setLikes(otherUsers);
             console.log(otherUsers);
+
+            const removeNutrition = await nutritionClient.deleteNutritionInfo(recipeId);
+
         }
         catch (error) {
             console.log(error.response.data);
@@ -95,6 +141,14 @@ function Details() {
             console.log(error.response.data);
         }
     };
+
+
+
+    /*const calories = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Calories');
+    const fat = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Fat');
+    const carbohydrates = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Carbohydrates');
+    const protein = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Protein');*/
+
 
 
     useEffect(() => {

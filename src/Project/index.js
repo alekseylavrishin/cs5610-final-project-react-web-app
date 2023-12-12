@@ -33,7 +33,7 @@ function Project() {
                                 <Route path="/details/:recipeId" element={<Details />} />
                                 <Route path="/users" element={<UserList />} />
                                 <Route path="users/:id" element={<UserDetails />}/>
-                                {/*<Route path={"/detailsPH"} element={<DetailsPH/>}/>*/}
+                                <Route path={"/detailsPH"} element={<DetailsPH/>}/>
                             </Routes>
                         </div>
                     </div>

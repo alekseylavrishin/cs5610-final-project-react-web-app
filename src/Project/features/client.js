@@ -30,3 +30,8 @@ export const checkIfRecipeFeatured = async (recipeId) => {
     const response = await axios.get(`${FEATURES_API}/${recipeId}`)
     return response.data;
 }
+
+export const findRecipesThatInfluencerFeatures = async (userId) => {
+    const response = await axios.get(`${USERS_API}/${userId}/features`);
+    return response.data;
+}

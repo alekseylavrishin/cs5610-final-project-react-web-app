@@ -3,11 +3,14 @@ import {useEffect, useState} from "react";
 import * as client from "./client";
 import * as likesClient from "../likes/client";
 import * as followsClient from "../follows/client";
+import * as nutritionClient from "../nutrition/client";
+import * as featuresClient from "../features/client";
 import {useSelector} from "react-redux";
 import {FaCircleUser} from "react-icons/fa6";
 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import {findRecipesThatInfluencerFeatures} from "../features/client";
 
 
 function UserDetails() {
@@ -16,9 +19,26 @@ function UserDetails() {
     const [features, setFeatures] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
+    const [nutrition, setNutrition] = useState([]);
     const {currentUser} = useSelector((state) => state.userReducer);
     const {id} = useParams();
     const navigate = useNavigate();
+
+  /*  const fetchNutrition = async (recipeId) => {
+        const nutrition = await nutritionClient.getNutritionInfo(recipeId);
+        setNutrition(nutrition);
+    }*/
+
+    const findRecipesThatInfluencerFeatures = async () => {
+        const features = await featuresClient.findRecipesThatInfluencerFeatures(id);
+        setFeatures(features);
+    }
+
+    const fetchAllNutrition = async () => {
+        const nutrition = await nutritionClient.getAllNutrition();
+        setNutrition(nutrition);
+        console.log(nutrition);
+    }
 
     const fetchLikes = async () => {
         const likes = await likesClient.findRecipesThatUserLikes(id)
@@ -73,6 +93,8 @@ function UserDetails() {
         fetchLikes();
         fetchFollowers();
         fetchFollowing();
+        fetchAllNutrition();
+        findRecipesThatInfluencerFeatures(id);
     }, [id])
 
     return (
@@ -112,14 +134,18 @@ function UserDetails() {
                                 {following.length}
                             </div>
                         </li>
-                        <li className={"list-group-item"}>
-                            <div className={"w-50 float-start"}>
-                                Features:
-                            </div>
-                            <div className={"w-50 float-end text-end"}>
-                                {features.length}
-                            </div>
-                        </li>
+                        {user && user.role === "INFLUENCER" && (
+                            <li className={"list-group-item"}>
+                                <div className={"w-50 float-start"}>
+                                    Features:
+                                </div>
+
+                                <div className={"w-50 float-end text-end"}>
+                                    {features.length}
+                                </div>
+
+                            </li>
+                            )}
                     </ul>
                 </div>
 
@@ -155,20 +181,51 @@ function UserDetails() {
                                             <Link to={`/project/details/${like.recipeId}`}>
                                                 <div className={"float-start col-3"}>
                                                     <img
-                                                        className={"rounded"}
+                                                        className={"rounded img-fluid ms-1"}
                                                         alt={"recipe image"}
                                                         width={208}
                                                         height={138.75}
                                                         src={like.recipeImage}/>
                                                 </div>
-                                                <div className={"float-lg-start float-md-end float-sm-end float-xs-end col-6 ps-4 ms-4"}>
-                                                <span>{like.recipeName}</span>
+                                                <div className={"row col-9 float-end"}>
+                                                    <div className={"float-lg-start float-md-end float-sm-end float-xs-end col-5 ms-4"}>
+                                                        <span>{like.recipeName}</span>
+                                                    </div>
+
+                                                    <div className={" col-sm-5 col-5 col-md-6 col-lg-6 float-end"}>
+                                                        <div>
+                                                            <span>
+                                                                Calories: {nutrition.find((nutrient) =>
+                                                                nutrient.recipeId === like.recipeId)?.calories}kcal
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <span>
+                                                                Fat: {nutrition.find((nutrient) =>
+                                                                nutrient.recipeId === like.recipeId)?.fat}g
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <span>
+                                                                Carbs: {nutrition.find((nutrient) =>
+                                                                nutrient.recipeId === like.recipeId)?.carbohydrates}g
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <span>
+                                                                Protein: {nutrition.find((nutrient) =>
+                                                                nutrient.recipeId === like.recipeId)?.protein}g
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </Link>
                                         </li>
                                     ))}
                                 </ul>
                             </Tab>
+                            {user && user.role === "INFLUENCER" && (
                             <Tab eventKey="Features" title="Featured Recipes" >
                                 {features.length === 0 && (<p>{user.username} has not featured any recipes yet</p>)}
                                 <ul className={"list-group"}>
@@ -192,6 +249,7 @@ function UserDetails() {
                                     ))}
                                 </ul>
                             </Tab>
+                            )}
                             <Tab eventKey="Followers" title="Followers">
                                 {followers.length === 0 && (<p>No users are currently following {user.username}</p>)}
                                 <div className={"list-group"}>
@@ -371,7 +429,7 @@ function UserDetails() {
 
 
 
-            <div className={"col-2 float-end text-center"}>
+            <div className={"col-2 col-lg-2 float-end text-center"}>
                     {currentUser && currentUser._id !== id &&(
                         <>
                         {alreadyFollowing() ? (

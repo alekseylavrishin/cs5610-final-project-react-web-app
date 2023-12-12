@@ -3,6 +3,7 @@ import {useState, useEffect} from "react";
 import * as client from "./client";
 import * as likesClient from "./likes/client";
 import * as featuresClient from "./features/client";
+import * as nutritionClient from "./nutrition/client";
 import {useSelector} from "react-redux";
 import "./home.css";
 import {FaCircleUser} from "react-icons/fa6";
@@ -34,17 +35,20 @@ function DetailsPH() {
         setLikes(likes);
     }
 
-    const selectedNutrients = ["Calories", "Fat", "Carbohydrates", "Protein"];
+
+
 
     const currentUserLikesRecipe = async () => {
         const _likes = await likesClient.createUserLikesRecipe(currentUser._id, 631894, Recipe.title, Recipe.image);
-
+        const nutrition = await nutritionClient.createNutritionInfo(631894, Recipe.title,
+            nutrients.Carbohydrates, nutrients.Fat, nutrients.Calories, nutrients.Protein);
         //setLikes([_likes, ...likes]);
         //setLikes([userPlaceholder, ...likes]);
         console.log(likes);
         fetchLikes();
 
     };
+
 
     const deleteUserLikesRecipe = async () => {
         try {
@@ -53,6 +57,10 @@ function DetailsPH() {
             let otherUsers = likes.filter(like => like.user._id !== currentUser._id);
             setLikes(otherUsers);
             console.log(otherUsers);
+            if (likesClient.findUsersThatLikeRecipe(631894) > 0) {
+                const removeNutrition = await nutritionClient.deleteNutritionInfo(631894);
+            }
+
         }
         catch (error) {
             console.log(error.response.data);
@@ -800,6 +808,13 @@ function DetailsPH() {
 
     };
 
+    const selectedNutrients = ["Calories", "Fat", "Carbohydrates", "Protein"];
+    const [nutrients, setNutrients] = useState({Calories: "", Fat: "", Carbohydrates: "", Protein: ""});
+    const calories = Recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Calories');
+    const fat = Recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Fat');
+    const carbohydrates = Recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Carbohydrates');
+    const protein = Recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Protein');
+
 
     useEffect(() => {
         //fetchRecipe();
@@ -807,6 +822,13 @@ function DetailsPH() {
         fetchLikes();
         fetchFeature();
        /* alreadyLiked();*/
+        setNutrients({
+            Calories: `${calories.amount} ${calories.unit}`,
+            Fat: `${fat.amount} ${fat.unit}`,
+            Carbohydrates: `${carbohydrates.amount} ${carbohydrates.unit}`,
+            Protein: `${protein.amount} ${protein.unit}`
+        });
+
     }, []);
 
     return(
