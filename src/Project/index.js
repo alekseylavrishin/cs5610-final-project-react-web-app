@@ -19,9 +19,9 @@ function Project() {
         <Provider store = {store}>
             <CurrentUser>
                 <div>
-                    <div className={"row"}>
+                    <div>
                         <Navigation/>
-                        <div className={"col-12"}>
+                        <div className={"col-12 "}>
                             <Routes>
                                 <Route path="/" element={<Navigate to="home" />} />
                                 <Route path="/home" element={<Home />} />

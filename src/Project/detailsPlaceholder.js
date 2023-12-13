@@ -4,9 +4,12 @@ import * as client from "./client";
 import * as likesClient from "./likes/client";
 import * as featuresClient from "./features/client";
 import * as nutritionClient from "./nutrition/client";
+import * as ingredientsClient from "./ingredients/client";
+
 import {useSelector} from "react-redux";
 import "./home.css";
 import {FaCircleUser} from "react-icons/fa6";
+import {createIngredientInfo} from "./ingredients/client";
 
 // This file is used to decorate /project/search/details
 // without sending requests to the remote API
@@ -18,17 +21,23 @@ function DetailsPH() {
     const [likes, setLikes] = useState([]);
     const [error, setError] = useState("");
     const [feature, setFeature] = useState(null);
+    const [ingredients, setIngredients] = useState({recipeId: "", recipeName: "",
+        extendedIngredients: { id: 0, original: "" }
+    });
+    const [instructions, setInstructions] = useState({
+        recipeId: "", recipeName: "",
+        instructions: {number: 0, step: ""}
+    })
 
 
-    /*const fetchRecipe = async () => {
+    const fetchRecipe = async () => {
         try {
-            const recipe = await client.getRecipeInfo(631894);
-            setRecipe(recipe);
+
         }
         catch(error){
-            setError(error.response.data.message)
+            console.log(error);
         }
-    };*/
+    };
 
     const fetchLikes = async () => {
         const likes = await likesClient.findUsersThatLikeRecipe(631894);
@@ -42,9 +51,27 @@ function DetailsPH() {
         const _likes = await likesClient.createUserLikesRecipe(currentUser._id, 631894, Recipe.title, Recipe.image);
         const nutrition = await nutritionClient.createNutritionInfo(631894, Recipe.title,
             nutrients.Carbohydrates, nutrients.Fat, nutrients.Calories, nutrients.Protein);
-        //setLikes([_likes, ...likes]);
-        //setLikes([userPlaceholder, ...likes]);
-        console.log(likes);
+
+       /* const ingredients = await ingredientsClient.createIngredientInfo(
+            631894, Recipe.name, Recipe.extendedIngredients);*/
+
+     /*   const ingredients = Recipe.extendedIngredients.map((ingredient, index) => (setIngredients(...ingredients, ingredient.))
+        setIngredients((ingredients) => ({...ingredients, extendedIngredients: }))*/
+
+        const newIngredients = Recipe.extendedIngredients.map((ingredient) => ({
+            id: ingredient.id,
+            original: ingredient.original,
+        }));
+
+// Updating the state using setIngredients
+        setIngredients((prevIngredients) => ({
+            ...prevIngredients,
+            extendedIngredients: newIngredients,
+        }));
+        const sendIngredients = await ingredientsClient.createIngredientInfo(631894, Recipe.title, ingredients.extendedIngredients);
+        console.log(ingredients);
+
+        //console.log(likes);
         fetchLikes();
 
     };
@@ -817,7 +844,7 @@ function DetailsPH() {
 
 
     useEffect(() => {
-        //fetchRecipe();
+        fetchRecipe();
         //fetchUser();
         fetchLikes();
         fetchFeature();

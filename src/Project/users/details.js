@@ -175,7 +175,7 @@ function UserDetails() {
                             className="mb-3 pj-navbar-font">
                             <Tab eventKey="Likes" title="Liked Recipes" >
                                 {likes.length === 0 && (<p>{user.username} has not liked any recipes yet</p>)}
-                                <ul className={"list-group"}>
+                                <ul className={"list-group mb-5"}>
                                     {likes.map((like, index) => (
                                         <li key={index} className={"list-group-item"}>
                                             <Link to={`/project/details/${like.recipeId}`}>

@@ -5,6 +5,7 @@ import {HashRouter} from "react-router-dom";
 
 function App() {
   return (
+      <div className={"overflow-y-hidden"}>
       <HashRouter>
           <div>
               <Routes>
@@ -13,6 +14,7 @@ function App() {
               </Routes>
             </div>
       </HashRouter>
+      </div>
   );
 }
 

@@ -6,6 +6,8 @@ import {useSelector} from "react-redux";
 import {FaCircleUser} from "react-icons/fa6";
 import * as featuresClient from "./features/client";
 import * as nutritionClient from "./nutrition/client";
+import * as ingredientsClient from "./ingredients/client";
+import * as instructionsClient from "./instructions/client";
 
 function Details() {
     const {currentUser} = useSelector((state) => state.userReducer);
@@ -15,37 +17,44 @@ function Details() {
     const [likes, setLikes] = useState([]);
     const [error, setError] = useState("");
     const [feature, setFeature] = useState(null);
-
-    const [calories, setCalories] = useState(null);
-    const [fat, setFat] = useState(null);
-    const [carbohydrates, setCarbs] = useState(null);
-    const [protein, setProtein] = useState(null);
     const selectedNutrients = ["Calories", "Fat", "Carbohydrates", "Protein"];
     const [nutrients, setNutrients] = useState({Calories: "", Fat: "", Carbohydrates: "", Protein: ""});
+    const [ingredients, setIngredients] = useState({recipeId: "", recipeName: "",
+        extendedIngredients: { id: 0, original: "" }
+    });
+    const [instructions, setInstructions] = useState({
+        recipeId: "", recipeName: "",
+        instructions: {number: 0, step: ""}
+    })
 
     const fetchRecipe = async () => {
         try {
             const recipe = await client.getRecipeInfo(recipeId);
             setRecipe(recipe);
 
+            // gets ingredients for upload to DB upon Like
+            const newIngredients = recipe.extendedIngredients.map((ingredient) => ({
+                id: ingredient.id,
+                original: ingredient.original,
+            }));
+            setIngredients((prevIngredients) => ({
+                ...prevIngredients,
+                extendedIngredients: newIngredients,
+            }));
+
+
+            const newInstructions = recipe.analyzedInstructions[0].steps.map((instruction) => ({
+                number: instruction.number,
+                step: instruction.step,
+            }))
+            setInstructions((prevInstructions) => ({
+                ...prevInstructions,
+                instructions: newInstructions,
+            }));
         }
         catch(error){
         }
     };
-
-    /*const setnutrients = () => {
-        setCalories(recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Calories'));
-        setFat(recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Fat'));
-        setCarbs(recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Carbohydrates'));
-        setProtein(recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Protein'));
-
-        setNutrients({
-            Calories: `${calories.amount} ${calories.unit}`,
-            Fat: `${fat.amount} ${fat.unit}`,
-            Carbohydrates: `${carbohydrates.amount} ${carbohydrates.unit}`,
-            Protein: `${protein.amount} ${protein.unit}`
-        });
-    }*/
 
 
     const fetchLikes = async () => {
@@ -57,50 +66,26 @@ function Details() {
         const _likes = await likesClient.createUserLikesRecipe(currentUser._id, recipeId, recipe.title, recipe.image);
 
 
-        const cals = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Calories');
-        const fat = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Fat');
-        const carbs = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Carbohydrates');
-        const protein = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Protein');
-
-        /*setNutrients({
-            Calories: `${calories.amount} ${calories.unit}`,
-            Fat: `${fat.amount} ${fat.unit}`,
-            Carbohydrates: `${carbohydrates.amount} ${carbohydrates.unit}`,
-            Protein: `${protein.amount} ${protein.unit}`
-        });*/
-
-        /*const nutrition = await nutritionClient.createNutritionInfo(recipeId, recipe.title,
-            nutrients.Carbohydrates, nutrients.Fat, nutrients.Calories, nutrients.Protein);*/
         const nutrition = await nutritionClient.createNutritionInfo(recipeId, recipe.title,
             recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Carbohydrates').amount,
             recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Fat').amount,
             recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Calories').amount,
             recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Protein').amount);
-
-
-
-        /*setLikes([_likes, ...likes]);
-        await fetchLikes();
-        alreadyLiked();*/
         fetchLikes();
     };
 
     const deleteUserLikesRecipe = async () => {
-        /*const status = await likesClient.deleteUserLikesRecipe(currentUser._id, recipeId);
-        await fetchLikes();
-        alreadyLiked();*/
         try {
             const status = await likesClient.deleteUserLikesRecipe(currentUser._id, recipeId);
             // removes liked recipe locally
             let otherUsers = likes.filter(like => like.user._id !== currentUser._id);
             setLikes(otherUsers);
             console.log(otherUsers);
-
             const removeNutrition = await nutritionClient.deleteNutritionInfo(recipeId);
-
+            //const removeIngredients = await ingredientsClient.deleteIngredientInfo(recipeId);
         }
         catch (error) {
-            console.log(error.response.data);
+            console.log(error);
         }
     };
 
@@ -124,7 +109,15 @@ function Details() {
         try {
             const status = await featuresClient.createInfluencerFeaturesRecipe(currentUser._id, recipeId, recipe.title, recipe.image)
             //fetchFeature();
+            const sendIngredients = await ingredientsClient.createIngredientInfo(recipeId, recipe.title, ingredients.extendedIngredients);
+            const nutrition = await nutritionClient.createNutritionInfo(recipeId, recipe.title,
+                recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Carbohydrates').amount,
+                recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Fat').amount,
+                recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Calories').amount,
+                recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Protein').amount);
+
             setFeature(status);
+            const sendInstructions = await instructionsClient.createInstructionInfo(recipeId, recipe.title, instructions.instructions);
         }
         catch (error) {
             console.log(error.response.data);
@@ -134,6 +127,9 @@ function Details() {
     const deleteFeature = async () => {
         try {
             const status = await featuresClient.deleteInfluencerFeaturesRecipe(currentUser._id, recipeId);
+            const removeNutrition = await nutritionClient.deleteNutritionInfo(recipeId);
+            const removeIngredients = await ingredientsClient.deleteIngredientInfo(recipeId);
+            const removeInstructions = await instructionsClient.deleteInstructionInfo(recipeId);
             //fetchFeature();
             setFeature(null);
         }
@@ -141,15 +137,6 @@ function Details() {
             console.log(error.response.data);
         }
     };
-
-
-
-    /*const calories = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Calories');
-    const fat = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Fat');
-    const carbohydrates = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Carbohydrates');
-    const protein = recipe.nutrition.nutrients.find(nutrient => nutrient.name === 'Protein');*/
-
-
 
     useEffect(() => {
         fetchRecipe();
@@ -226,10 +213,8 @@ function Details() {
 
                         <div className={"mb-4 row"}>
                             <div dangerouslySetInnerHTML={{__html: recipe.summary}}></div>
-                            {/*<p>{Recipe.summary}</p>*/}
                         </div>
 
-                        {/*<h3>Ready in {Recipe.readyInMinutes} minutes</h3>*/}
                         <h4 className={"fw-semibold"}>Ingredients:</h4>
                         <ul className={"ms-3"} >
                             {recipe.extendedIngredients.map((ingredient, index) => (
@@ -240,7 +225,7 @@ function Details() {
                         </ul>
                         <h4 className={"fw-semibold mb-2 mt-3"}>Preparation Instructions:</h4>
                         <ol className={"list-group-numbered"}>
-                            {recipe.analyzedInstructions[0].steps.map((step, index) => (
+                            {recipe.analyzedInstructions[0]?.steps.map((step, index) => (
                                 <li className={"list-group-item mb-2"} key={index}>
                                     {step.step}
                                 </li>
@@ -272,11 +257,6 @@ function Details() {
                         </div>
 
                     </div>
-
-                    {/*
-                    <pre>{JSON.stringify(Recipe, null, 2)}</pre>
-*/}
-
                 </div>
             )}
         </div>
