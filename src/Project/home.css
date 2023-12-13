@@ -11,6 +11,7 @@
 .wd-dashboard-card {
     width: 250px;
     height: 250px;
+    min-height: 300px;
     margin-right: 30px;
     margin-bottom: 30px;
     padding: 5px;

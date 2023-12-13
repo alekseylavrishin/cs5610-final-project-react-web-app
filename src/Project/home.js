@@ -123,9 +123,11 @@ function Home() {
                                            {/* <p className="card-text">{card.text}</p>*/}
                                         </div>
                                         </Link>
-                                        <Button variant="outline-primary" onClick={() => handleShow(card.recipeId)}>
+                                        <div className={"col-12 mt-auto"}>
+                                        <Button variant="outline-primary w-100" onClick={() => handleShow(card.recipeId)}>
                                             Quick Look
                                         </Button>
+                                        </div>
                                     </div>
 
                                 </div>
