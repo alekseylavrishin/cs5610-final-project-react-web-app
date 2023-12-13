@@ -10,7 +10,6 @@ import {FaCircleUser} from "react-icons/fa6";
 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import {findRecipesThatInfluencerFeatures} from "../features/client";
 
 
 function UserDetails() {
@@ -24,10 +23,6 @@ function UserDetails() {
     const {id} = useParams();
     const navigate = useNavigate();
 
-  /*  const fetchNutrition = async (recipeId) => {
-        const nutrition = await nutritionClient.getNutritionInfo(recipeId);
-        setNutrition(nutrition);
-    }*/
 
     const findRecipesThatInfluencerFeatures = async () => {
         const features = await featuresClient.findRecipesThatInfluencerFeatures(id);
@@ -52,14 +47,9 @@ function UserDetails() {
 
     const updateUser = async () => {
         const status = await client.updateUser(id, user);
-        fetchUser();
-
+        await fetchUser();
+        window.location.reload();
     };
-
-    /*const deleteUser = async (id) => {
-        const status = await client.deleteUser(id);
-        navigate("/project/home");
-    }*/
 
     const unFollowUser = async () => {
         const status = await followsClient.userUnfollowsUser(id);
@@ -99,12 +89,7 @@ function UserDetails() {
 
     return (
         <div className={"row mt-4 ms-1 me-1"}>
-
-            {/*{currentUser && currentUser._id === id && (
-                navigate("/project/account")
-            )}*/}
-
-            <div className={"col-2 col-sm-3 col-md-2 col-lg-2 float-start"}>
+            <div className={"col-4 col-sm-3 col-md-2 col-lg-2 float-start"}>
                 <div className={"row text-center mb-4 mt-1"} >
                     <FaCircleUser className={"display-1 pj-navbar-font"}/>
                 </div>
@@ -148,27 +133,14 @@ function UserDetails() {
                             )}
                     </ul>
                 </div>
-
             </div>
 
-            <div className={"col-lg-8 col-sm-8"}>
+            <div className={"col-lg-8 col-sm-8 col-md-9 col-6"}>
                 {user && (
                     <div>
                         <h3 className={"mb-3"}>{user.username}</h3>
                         <h5 className={"mb-3"}>{user.role}</h5>
                         <h5 className={"mb-3"}>{user.email}</h5>
-
-                        {/*<p>First Name:
-                            <input type={"text"} className={"form-control"} value={user.firstName}
-                                   onChange={(e) => setUser({...user, firstName: e.target.value})}
-                            /></p>
-                        <button className={"btn btn-primary"} onClick={updateUser}>
-                            Update
-                        </button>
-                        <button className={"btn btn-danger"} onClick={() => deleteUser(user._id)}>
-                            Delete
-                        </button>*/}
-
                         <Tabs
                             defaultActiveKey="Likes"
                             id="uncontrolled-tab-example"
@@ -188,30 +160,30 @@ function UserDetails() {
                                                         src={like.recipeImage}/>
                                                 </div>
                                                 <div className={"row col-9 float-end"}>
-                                                    <div className={"float-lg-start float-md-end float-sm-end float-xs-end col-5 ms-4"}>
+                                                    <div className={"mb-2 text-wrap float-lg-start float-md-end float-sm-end float-start col-5 ms-1"}>
                                                         <span>{like.recipeName}</span>
                                                     </div>
 
-                                                    <div className={" col-sm-5 col-5 col-md-6 col-lg-6 float-end"}>
-                                                        <div>
+                                                    <div className={" col-sm-6 col-5 col-md-6 col-lg-6 col-12 float-end"}>
+                                                        <div className={"col-12 pj-recipe-nutrition pt-2 pb-2 ps-3 pe-3"}>
                                                             <span>
                                                                 Calories: {nutrition.find((nutrient) =>
                                                                 nutrient.recipeId === like.recipeId)?.calories}kcal
                                                             </span>
                                                         </div>
-                                                        <div>
+                                                        <div className={"col-12 pj-recipe-nutrition pt-2 pb-2 ps-3 pe-3"}>
                                                             <span>
                                                                 Fat: {nutrition.find((nutrient) =>
                                                                 nutrient.recipeId === like.recipeId)?.fat}g
                                                             </span>
                                                         </div>
-                                                        <div>
+                                                        <div className={"col-12 pj-recipe-nutrition pt-2 pb-2 ps-3 pe-3"}>
                                                             <span>
                                                                 Carbs: {nutrition.find((nutrient) =>
                                                                 nutrient.recipeId === like.recipeId)?.carbohydrates}g
                                                             </span>
                                                         </div>
-                                                        <div>
+                                                        <div className={"col-12 pj-recipe-nutrition pt-2 pb-2 ps-3 pe-3"}>
                                                             <span>
                                                                 Protein: {nutrition.find((nutrient) =>
                                                                 nutrient.recipeId === like.recipeId)?.protein}g
@@ -240,33 +212,30 @@ function UserDetails() {
                                                         height={138.75}
                                                         src={feature.recipeImage}/>
                                                 </div>
-{/*
-                                                <div className={"float-lg-start float-md-end float-sm-end float-xs-end col-6 ps-4 ms-4"}>
-*/}
                                                 <div className={"row col-9 float-end"}>
                                                     <div className={"float-lg-start float-md-end float-sm-end float-xs-end col-5 ms-4"}>
                                                     <span>{feature.recipeName}</span>
                                                     </div>
-                                                <div className={" col-sm-5 col-5 col-md-6 col-lg-6 float-end"}>
-                                                    <div>
+                                                    <div className={" col-sm-6 col-5 col-md-6 col-lg-6 col-12 float-end"}>
+                                                        <div className={"col-12 pj-recipe-nutrition pt-2 pb-2 ps-3 pe-3"}>
                                                             <span>
                                                                 Calories: {nutrition.find((nutrient) =>
                                                                 nutrient.recipeId === feature.recipeId)?.calories}kcal
                                                             </span>
                                                     </div>
-                                                    <div>
+                                                        <div className={"col-12 pj-recipe-nutrition pt-2 pb-2 ps-3 pe-3"}>
                                                             <span>
                                                                 Fat: {nutrition.find((nutrient) =>
                                                                 nutrient.recipeId === feature.recipeId)?.fat}g
                                                             </span>
                                                     </div>
-                                                    <div>
+                                                        <div className={"col-12 pj-recipe-nutrition pt-2 pb-2 ps-3 pe-3"}>
                                                             <span>
                                                                 Carbs: {nutrition.find((nutrient) =>
                                                                 nutrient.recipeId === feature.recipeId)?.carbohydrates}g
                                                             </span>
                                                     </div>
-                                                    <div>
+                                                        <div className={"col-12 pj-recipe-nutrition pt-2 pb-2 ps-3 pe-3"}>
                                                             <span>
                                                                 Protein: {nutrition.find((nutrient) =>
                                                                 nutrient.recipeId === feature.recipeId)?.protein}g
@@ -287,8 +256,8 @@ function UserDetails() {
                                     {followers.map((follows, index) => (
                                         <li className={"list-group-item row"}>
                                             <Link key={index}  to={`/project/users/${follows.follower._id}`}>
-                                                <div className={"col-2 float-start"}>
-                                                    <FaCircleUser fontSize={40} className={"me-2"}/>
+                                                <div className={"col-2 float-start me-3"}>
+                                                    <FaCircleUser fontSize={40}/>
                                                 </div>
                                                 <div className={"col-5 float-start mt-2 mb-2"}>
                                                     {follows.follower.username}
@@ -316,7 +285,7 @@ function UserDetails() {
                                     {following.map((follows, index) => (
                                         <li className={"list-group-item row"}>
                                             <Link key={index}  to={`/project/users/${follows.followed._id}`}>
-                                                <div className={"col-2 float-start"}>
+                                                <div className={"col-2 float-start me-3"}>
                                                     <FaCircleUser fontSize={40} className={"me-2"}/>
                                                 </div>
                                                 <div className={"col-5 float-start mt-2 mb-2"}>
@@ -324,13 +293,13 @@ function UserDetails() {
                                                 </div>
                                             </Link>
                                             <div className={"col-2 float-end"}>
-                                                {currentUser && currentUser._id === id && (
+                                                {/*{currentUser && currentUser._id === id && (
                                                     <button
                                                     className={"btn btn-danger"}
-                                                    onClick={() => fetchFollowing()}>
+                                                    onClick={() => unFollowUser()}>
                                                     Unfollow
                                                     </button>
-                                                )}
+                                                )}*/}
                                             </div>
                                         </li>
                                     ))}
@@ -457,10 +426,7 @@ function UserDetails() {
                 )}
             </div>
 
-
-
-
-            <div className={"col-2 col-lg-2 float-end text-center"}>
+            <div className={"col-2 col-lg-2 col-sm-1 float-end text-center"}>
                     {currentUser && currentUser._id !== id &&(
                         <>
                         {alreadyFollowing() ? (

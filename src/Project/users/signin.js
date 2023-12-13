@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import * as client from "./client";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -25,7 +25,7 @@ function Signin() {
     };
 
     return(
-        <div className={"row justify-content-center"}>
+        <div className={"row col-12 justify-content-center"}>
             <div className={"col-10 text-center border border-dark-subtle border-2 ms-4 me-4 mt-4 mb-4"}>
                 <h2 className={"mt-2 mb-2"}> Sign In</h2>
                 <div className={"form-group mb-4 row d-flex justify-content-center"}>

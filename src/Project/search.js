@@ -30,7 +30,7 @@ function Search() {
 
 
     return(
-        <div className={"ms-3 me-3 mt-3"}>
+        <div className={"col-10 ms-3 me-3 mt-3"}>
             <div className={"row"}>
                 <div className={"row ms-3"}>
                     <h2>Search for a Recipe</h2>
@@ -71,11 +71,6 @@ function Search() {
                         ))}
                 </div>
             </div>
-
-{/*
-            <pre>{JSON.stringify(results, null, 2)}</pre>
-*/}
-
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {FaUtensils, FaMagnifyingGlass, FaCircleUser} from "react-icons/fa6";
-import {Button, Container, Form, Nav, Navbar, NavDropdown} from "react-bootstrap";
+import {FaUtensils, FaCircleUser} from "react-icons/fa6";
+import {Container, Nav, Navbar} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import * as client from "./users/client";
 import {setCurrentUser} from "./users/reducer";
@@ -40,13 +40,6 @@ function Navigation() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-3 me-auto">
-
-                        <Nav.Link className={"me-lg-4"}>
-                            <Link to={"/project/detailsPH"} className={"list-group-item"}>
-                                <span className={"pj-navbar-font"}>Details Placeholder</span>
-                            </Link>
-                        </Nav.Link>
-
                         <Nav.Link className={"me-lg-4"}>
                             <Link to={"/project/home"} className={"list-group-item"}>
                                 <span className={"pj-navbar-font"}>Home</span>
@@ -106,8 +99,6 @@ function Navigation() {
                                 </Link>
                            </Nav.Link>
                            )}
-
-
                     </Nav>
                 </Navbar.Collapse>
             </Container>

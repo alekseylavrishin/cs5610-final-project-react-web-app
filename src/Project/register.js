@@ -50,7 +50,7 @@ function Register() {
 
 
     return (
-        <div className={"row justify-content-center"}>
+        <div className={"row col-12 justify-content-center"}>
         <div className={"col-10 text-center border border-dark-subtle border-2 mt-4"}>
             <div className="row d-flex justify-content-center mb-2 mt-2">
                 <h2>Register for Recipe Finder</h2>

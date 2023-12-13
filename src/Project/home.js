@@ -24,18 +24,12 @@ function Home() {
     const indexOfFirstCard = indexOfLastCard - cardsPerPage;
     const currentCards = allFeatures.slice(indexOfFirstCard, indexOfLastCard);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-    const [nutritionList, setNutritionList] = useState([]);
-    const [instructionList, setInstructionList] = useState([]);
-
-
 
     const [show, setShow] = useState(false);
     const [modalIngredients, setModalIngredients] = useState(null);
     const [modalNutrition, setModalNutrition] = useState(null);
     const [modalRecipeId, setModalRecipeId] = useState(null);
     const [modalInstructions, setModalInstructions] = useState(null);
-
-
 
     const handleClose = () => setShow(false);
     const handleShow = async (recipeId) =>{
@@ -49,8 +43,6 @@ function Home() {
         setModalInstructions(instructions);
 
     }
-
-
 
     const fetchAllFeatures = async () => {
         try {
@@ -123,7 +115,7 @@ function Home() {
                                 <div>
 
                                     <div key={index} className="card wd-dashboard-card">
-                                        <Link to={`/project/details/${card.recipeId}`} key={index}>
+                                        <Link to={`/project/details/${card.recipeId}`} className={"pj-link"} key={index}>
 
                                         <img src={card.recipeImage} className="card-img-top" alt="..." />
                                         <div className="card-body">
@@ -199,12 +191,7 @@ function Home() {
                                 </Button>
                             </Modal.Footer>
                         </Modal>
-
-
                     </>
-
-
-
                     )}
             </div>
 

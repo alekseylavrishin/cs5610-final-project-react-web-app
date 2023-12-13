@@ -64,6 +64,11 @@
     background-color: #f5f6ea;
 }
 
+.pj-link {
+    color: black;
+    text-decoration: none;
+}
+
 li {
     color: #e7ab46;
 }
