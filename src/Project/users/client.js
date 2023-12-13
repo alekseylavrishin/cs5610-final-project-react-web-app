@@ -53,3 +53,8 @@ export const createUser = async (user) => {
     const response = await request.post(`${USERS_API}`, user);
     return response.data;
 };
+
+export const updateUserAsAdmin = async (id, user) => {
+    const response = await request.put(`${USERS_API}/admin/${id}`, user);
+    return response.data;
+};

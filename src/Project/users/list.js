@@ -2,6 +2,7 @@ import * as client from "./client";
 import {useEffect, useState} from "react";
 import {Link, Navigate} from "react-router-dom";
 import {BsPencil, BsTrash3Fill} from "react-icons/bs";
+import {updateUserAsAdmin} from "./client";
 
 
 function UserList() {
@@ -56,7 +57,8 @@ function UserList() {
 
     const updateUser = async () => {
         try {
-            const status = await client.updateUser(user._id, user);
+            //const status = await client.updateUser(user._id, user);
+            const status = await client.updateUserAsAdmin(user._id, user);
             setUsers(users.map((u) => (u._id === user._id ? user : u)));
             clearSelectedUser();
             setError("");
